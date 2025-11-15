@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+/* Базовая тема через Tailwind токены */
+body  { @apply bg-bg text-text antialiased font-inter; }
+
+/* Акцент "бесконечность": мягкое движение */
+@keyframes infinity-rot   { 0% { transform: rotate(0deg) } 100% { transform: rotate(360deg) } }
+@keyframes infinity-drift { 0% { transform: translateY(-6px) } 50% { transform: translateY(6px) } 100% { transform: translateY(-6px) } }
+@keyframes infinity-pulse { 0% { transform: scale(0.985) } 50% { transform: scale(1.015) } 100% { transform: scale(0.985) } }
+
+@layer utilities {
+    .animate-infinity {
+        animation:
+                infinity-rot 26s linear infinite,
+                infinity-drift 9s ease-in-out infinite,
+                infinity-pulse 7s ease-in-out infinite;
+    }
+}
+
+/* На десктопах оставляем системный курсор */
+@media (pointer: fine) {
+    body { cursor: auto; }
+}
+
+/* Доступность: при отключённых анимациях — не анимируем акцент */
+@media (prefers-reduced-motion: reduce) {
+    .animate-infinity {
+        animation: none !important;
+    }
+}
+
+html, body, #root {
+    height: 100%;
+    background: #0D0D0F;
+    color: #EAEAEA;
+}
+
+@layer components {
+    .card { @apply rounded-2xl border border-white/10 bg-white/[0.05] p-1; }
+    .card-inner { @apply overflow-hidden rounded-xl; }
+    .btn-ghost { @apply px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-xs md:text-sm; }
+    .btn-ghost:disabled { @apply border-white/10 opacity-60 cursor-not-allowed; }
+}
