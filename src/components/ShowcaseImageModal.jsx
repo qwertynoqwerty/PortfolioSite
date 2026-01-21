@@ -3,6 +3,11 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import useLockBodyScroll from "../utils/useLockBodyScroll";
 import SmartImage from "./SmartImage";
 
+/**
+ * ShowcaseImageModal
+ * 1) Галерея (сеткой)
+ * 2) Viewer (полноформат): верхняя панель ВСЕГДА сверху, фото ВСЕГДА по центру
+ */
 export default function ShowcaseImageModal({ open, title, images = [], onClose, initialFocusRef }) {
     useLockBodyScroll(open);
 
@@ -10,7 +15,9 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
 
     const [viewerOpen, setViewerOpen] = useState(false);
     const [viewerIndex, setViewerIndex] = useState(0);
-    const viewerCloseRef = useRef(null);
+
+    const closeGalleryRef = useRef(null);
+    const closeViewerRef = useRef(null);
 
     useEffect(() => {
         if (open == false) {
@@ -20,7 +27,10 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
     }, [open]);
 
     const openViewer = (index) => {
-        if (list.length == 0) return;
+        if (list.length == 0) {
+            return;
+        }
+
         const safe = Math.max(0, Math.min(index, list.length - 1));
         setViewerIndex(safe);
         setViewerOpen(true);
@@ -31,38 +41,64 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
     };
 
     const goPrev = () => {
-        if (list.length == 0) return;
-        if (viewerIndex > 0) setViewerIndex(viewerIndex - 1);
-        else setViewerIndex(list.length - 1);
+        if (list.length == 0) {
+            return;
+        }
+
+        if (viewerIndex > 0) {
+            setViewerIndex(viewerIndex - 1);
+        } else {
+            setViewerIndex(list.length - 1);
+        }
     };
 
     const goNext = () => {
-        if (list.length == 0) return;
-        if (viewerIndex < list.length - 1) setViewerIndex(viewerIndex + 1);
-        else setViewerIndex(0);
+        if (list.length == 0) {
+            return;
+        }
+
+        if (viewerIndex < list.length - 1) {
+            setViewerIndex(viewerIndex + 1);
+        } else {
+            setViewerIndex(0);
+        }
     };
 
     const currentSrc = list.length > 0 ? list[viewerIndex] : "";
 
     return (
         <>
-            {/* Галерея */}
+            {/* GALLEY MODAL */}
             <Transition appear show={open} as={Fragment}>
-                <Dialog as="div" className="relative z-[100]" onClose={onClose} initialFocus={initialFocusRef || undefined}>
+                <Dialog
+                    as="div"
+                    className="relative z-[100]"
+                    onClose={onClose}
+                    initialFocus={initialFocusRef || closeGalleryRef || undefined}
+                >
                     <Transition.Child
                         as={Fragment}
-                        enter="ease-out duration-200" enterFrom="opacity-0" enterTo="opacity-100"
-                        leave="ease-in duration-200"  leaveFrom="opacity-100" leaveTo="opacity-0"
+                        enter="ease-out duration-200"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
                     >
                         <div className="fixed inset-0 bg-black/70 backdrop-blur-[2px]" />
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
+                        {/* ВАЖНО: всегда по центру */}
                         <div className="flex min-h-screen items-center justify-center px-6 py-10">
                             <Transition.Child
                                 as={Fragment}
-                                enter="ease-out duration-200" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100"
-                                leave="ease-in duration-200"  leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"
+                                enter="ease-out duration-200"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
                             >
                                 <Dialog.Panel className="w-[min(92rem,92vw)] rounded-2xl border border-white/10 bg-[#121214] p-6 md:p-7 shadow-xl">
                                     <div className="flex items-center justify-between">
@@ -70,7 +106,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                             {title}
                                         </Dialog.Title>
                                         <button
-                                            ref={initialFocusRef || undefined}
+                                            ref={closeGalleryRef}
                                             onClick={onClose}
                                             className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
                                         >
@@ -82,6 +118,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                         Нажмите на изображение, чтобы открыть в полном размере
                                     </div>
 
+                                    {/* сетка: 2 / 3 / 2 */}
                                     <div className="mt-5 grid gap-4">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             {list.slice(0, 2).map((src, i) => (
@@ -89,9 +126,9 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                                     key={`top-${i}`}
                                                     type="button"
                                                     onClick={() => openViewer(i)}
-                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-white/[0.04] text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
+                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
                                                 >
-                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover" />
+                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover bg-black" />
                                                 </button>
                                             ))}
                                         </div>
@@ -102,9 +139,9 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                                     key={`mid-${i}`}
                                                     type="button"
                                                     onClick={() => openViewer(i + 2)}
-                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-white/[0.04] text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
+                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
                                                 >
-                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover" />
+                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover bg-black" />
                                                 </button>
                                             ))}
                                         </div>
@@ -115,9 +152,9 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                                     key={`bot-${i}`}
                                                     type="button"
                                                     onClick={() => openViewer(i + 5)}
-                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-white/[0.04] text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
+                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
                                                 >
-                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover" />
+                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover bg-black" />
                                                 </button>
                                             ))}
                                         </div>
@@ -129,66 +166,75 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                 </Dialog>
             </Transition>
 
-            {/* Viewer (полноформат) */}
+            {/* VIEWER MODAL: header всегда сверху, фото всегда по центру */}
             <Transition appear show={viewerOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-[120]" onClose={closeViewer} initialFocus={viewerCloseRef}>
+                <Dialog as="div" className="relative z-[120]" onClose={closeViewer} initialFocus={closeViewerRef}>
                     <Transition.Child
                         as={Fragment}
-                        enter="ease-out duration-200" enterFrom="opacity-0" enterTo="opacity-100"
-                        leave="ease-in duration-200"  leaveFrom="opacity-100" leaveTo="opacity-0"
+                        enter="ease-out duration-200"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
                     >
                         <div className="fixed inset-0 bg-black/85 backdrop-blur-[2px]" />
                     </Transition.Child>
 
-                    <div className="fixed inset-0 flex items-center justify-center p-4 md:p-8">
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-200" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100"
-                            leave="ease-in duration-200"  leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"
-                        >
-                            <Dialog.Panel className="w-full max-w-[96vw]">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm md:text-base text-white/80">
-                                        {title} — {viewerIndex + 1}/{list.length}
-                                    </div>
+                    {/* фиксированная обёртка viewer на весь экран */}
+                    <div className="fixed inset-0">
+                        {/* Верхняя панель — всегда сверху */}
+                        <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-4">
+                            <div className="text-xs md:text-sm text-white/80">
+                                {title} — {list.length > 0 ? `${viewerIndex + 1}/${list.length}` : ""}
+                            </div>
 
-                                    <div className="flex items-center gap-2">
-                                        <button
-                                            type="button"
-                                            onClick={goPrev}
-                                            className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
-                                        >
-                                            ‹
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={goNext}
-                                            className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
-                                        >
-                                            ›
-                                        </button>
-                                        <button
-                                            ref={viewerCloseRef}
-                                            type="button"
-                                            onClick={closeViewer}
-                                            className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
-                                        >
-                                            Закрыть
-                                        </button>
-                                    </div>
-                                </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={goPrev}
+                                    className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                >
+                                    ‹
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={goNext}
+                                    className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                >
+                                    ›
+                                </button>
+                                <button
+                                    ref={closeViewerRef}
+                                    type="button"
+                                    onClick={closeViewer}
+                                    className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                >
+                                    Закрыть
+                                </button>
+                            </div>
+                        </div>
 
-                                <div className="w-full flex items-center justify-center">
-                                    <div className="rounded-2xl border border-white/10 bg-black/30 p-2 md:p-3">
-                                        <SmartImage
-                                            src={currentSrc}
-                                            alt=""
-                                            className="max-w-[96vw] max-h-[86vh] object-contain"
-                                        />
-                                    </div>
+                        {/* Контент — фото по центру, верхняя панель не влияет */}
+                        <div className="flex h-full w-full items-center justify-center px-4 md:px-8 pt-16 pb-8">
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-200"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                            >
+                                <div className="rounded-2xl border border-white/10 bg-black/30 p-2 md:p-3">
+                                    <SmartImage
+                                        src={currentSrc}
+                                        alt=""
+                                        className="max-w-[92vw] max-h-[80vh] object-contain bg-black rounded-xl"
+                                    />
                                 </div>
-                            </Dialog.Panel>
-                        </Transition.Child>
+                            </Transition.Child>
+                        </div>
                     </div>
                 </Dialog>
             </Transition>
