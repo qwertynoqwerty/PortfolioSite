@@ -5,6 +5,8 @@ export default defineConfig(({ mode }) => {
   const isProd = mode === "production";
 
   return {
+    base: isProd ? "/PortfolioSite/" : "/",
+
     plugins: [react()],
 
     build: {
@@ -27,7 +29,7 @@ export default defineConfig(({ mode }) => {
     },
 
     esbuild: {
-      // В проде убираем шум и лишние операции
+      // В проде убираем console.log / debugger
       drop: isProd ? ["console", "debugger"] : [],
     },
   };
