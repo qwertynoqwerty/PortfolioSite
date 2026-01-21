@@ -1,21 +1,21 @@
 [
   {
-    "id": "vrcollege-vr",
-    "title": "VRCollege",
+    "id": "museumroom-mr",
+    "title": "MuseumRoom",
     "year": 2026,
-    "date": "2026-01",
-    "summary": "Интерактивное VR-приложение, созданное на Unity с серверной частью на ASP.NET Core + PostgreSQL. Пользователь может перемещаться по виртуальному кампусу колледжа, общаться с NPC, выполнять квесты и получать достижения. Реализованы: JWT-авторизация, сохранение прогресса, система квестов, аудиодиалоги, работа с API и адаптивный UI для VR-интерфейсов.",
-    "cover": "/src/assets/images/vrcollege/vrcollege-cover.jpg",
+    "date": "2025-12",
+    "summary": "Интерактивное MR-приложение, разработанное на Unity, ориентированное на создание и редактирование виртуального музейного пространства, интегрированного в реальное окружение пользователя. Приложение позволяет сканировать физическое помещение, формировать виртуальную комнату на основе Spatial Anchors, размещать и настраивать картины, постаменты и экспонаты, изменять внешний вид стен, а также централизованно управлять музейным контентом через интерактивные элементы управления.",
+    "cover": "/src/assets/images/museum/museum-cover.webp",
     "images": [
-      "/src/assets/images/vrcollege/vrcollege-1.jpg",
-      "/src/assets/images/vrcollege/vrcollege-2.jpg",
-      "/src/assets/images/vrcollege/vrcollege-3.jpg",
-      "/src/assets/images/vrcollege/vrcollege-4.jpg",
-      "/src/assets/images/vrcollege/vrcollege-5.jpg",
-      "/src/assets/images/vrcollege/vrcollege-6.jpg",
-      "/src/assets/images/vrcollege/vrcollege-7.jpg"
+      "/src/assets/images/museum/museum-1.webp",
+      "/src/assets/images/museum/museum-2.webp",
+      "/src/assets/images/museum/museum-3.webp",
+      "/src/assets/images/museum/museum-4.webp",
+      "/src/assets/images/museum/museum-5.webp",
+      "/src/assets/images/museum/museum-6.webp",
+      "/src/assets/images/museum/museum-7.webp"
     ],
-    "youtubeId": "",
+    "youtubeId": "g4c3En5C5_A",
     "repo": "",
     "featured": true
   },
@@ -25,15 +25,15 @@
     "year": 2025,
     "date": "2025-09",
     "summary": "AR-приложение для просмотра 3D-модели автомобиля, в разработке которого я участвовал. Использованы AR Foundation для распознавания маркера и размещения модели, LeanTouch для жестов вращения и масштабирования, Cinemachine для управления виртуальными камерами, встроенный WebView для отображения дополнительного контента, а также DOTween для анимаций интерфейса и плавных переходов. Реализованы удобный AR-просмотр, адаптивный UI и оптимизированная логика взаимодействия с моделью.",
-    "cover": "/src/assets/images/car/car-cover.jpg",
+    "cover": "/src/assets/images/car/car-cover.webp",
     "images": [
-      "/src/assets/images/car/car-1.jpg",
-      "/src/assets/images/car/car-2.jpg",
-      "/src/assets/images/car/car-3.jpg",
-      "/src/assets/images/car/car-4.jpg",
-      "/src/assets/images/car/car-5.jpg",
-      "/src/assets/images/car/car-6.jpg",
-      "/src/assets/images/car/car-7.jpg"
+      "/src/assets/images/car/car-1.webp",
+      "/src/assets/images/car/car-2.webp",
+      "/src/assets/images/car/car-3.webp",
+      "/src/assets/images/car/car-4.webp",
+      "/src/assets/images/car/car-5.webp",
+      "/src/assets/images/car/car-6.webp",
+      "/src/assets/images/car/car-7.webp"
     ],
     "youtubeId": "SqFC846dmqM",
     "repo": "",
@@ -45,13 +45,13 @@
     "year": 2023,
     "date": "2023-11",
     "summary": "Небольшой учебный проект на Unity, вдохновлённый Knife Hit. Реализованы метание кинжалов, вращающиеся брёвна, сбор яблок и плавные переходы между уровнями.",
-    "cover": "/src/assets/images/dagger/dagger-cover.jpg",
+    "cover": "/src/assets/images/dagger/dagger-cover.webp",
     "images": [
-      "/src/assets/images/dagger/dagger-1.jpg",
-      "/src/assets/images/dagger/dagger-2.jpg",
-      "/src/assets/images/dagger/dagger-3.jpg",
-      "/src/assets/images/dagger/dagger-4.jpg",
-      "/src/assets/images/dagger/dagger-5.jpg"
+      "/src/assets/images/dagger/dagger-1.webp",
+      "/src/assets/images/dagger/dagger-2.webp",
+      "/src/assets/images/dagger/dagger-3.webp",
+      "/src/assets/images/dagger/dagger-4.webp",
+      "/src/assets/images/dagger/dagger-5.webp"
     ],
     "youtubeId": "0YUaSUzHkDY",
     "repo": "https://github.com/qwertyzxcww/DaggerHit2D",
@@ -63,13 +63,13 @@
     "year": 2025,
     "date": "2025-08",
     "summary": "Тестовый гоночный проект на Unity с двумя заездами: первый записывает траекторию игрока, а во втором по трассе едет призрак, повторяющий его движение.",
-    "cover": "/src/assets/images/rider/rider-cover.png",
+    "cover": "/src/assets/images/rider/rider-cover.webp",
     "images": [
-      "/src/assets/images/rider/rider-1.png",
-      "/src/assets/images/rider/rider-2.png",
-      "/src/assets/images/rider/rider-3.png",
-      "/src/assets/images/rider/rider-4.png",
-      "/src/assets/images/rider/rider-5.png"
+      "/src/assets/images/rider/rider-1.webp",
+      "/src/assets/images/rider/rider-2.webp",
+      "/src/assets/images/rider/rider-3.webp",
+      "/src/assets/images/rider/rider-4.webp",
+      "/src/assets/images/rider/rider-5.webp"
     ],
     "youtubeId": "dMN544YPlRM",
     "repo": "https://github.com/qwertyzxcww/RiderVsGhost3D",
@@ -81,13 +81,13 @@
     "year": 2023,
     "date": "2024-02",
     "summary": "Учебная 2D-аркада на Unity: игрок управляет машиной, уворачивается от встречных авто, набирает очки с активацией финальных панелей по итогам заезда.",
-    "cover": "/src/assets/images/race/race-cover.png",
+    "cover": "/src/assets/images/race/race-cover.webp",
     "images": [
-      "/src/assets/images/race/race-1.png",
-      "/src/assets/images/race/race-2.png",
-      "/src/assets/images/race/race-3.png",
-      "/src/assets/images/race/race-4.png",
-      "/src/assets/images/race/race-5.png"
+      "/src/assets/images/race/race-1.webp",
+      "/src/assets/images/race/race-2.webp",
+      "/src/assets/images/race/race-3.webp",
+      "/src/assets/images/race/race-4.webp",
+      "/src/assets/images/race/race-5.webp"
     ],
     "youtubeId": "fu2X4b55_54",
     "repo": "https://github.com/qwertyzxcww/UnityRace2D",
@@ -99,13 +99,13 @@
     "year": 2024,
     "date": "2024-02",
     "summary": "3D-tower-defense на Unity: игрок размещает растения, генерирует солнышки и отбивает волны врагов с жизненной системой и финальными панелями.",
-    "cover": "/src/assets/images/pvu/pvu-cover.png",
+    "cover": "/src/assets/images/pvu/pvu-cover.webp",
     "images": [
-      "/src/assets/images/pvu/pvu-1.png",
-      "/src/assets/images/pvu/pvu-2.png",
-      "/src/assets/images/pvu/pvu-3.png",
-      "/src/assets/images/pvu/pvu-4.png",
-      "/src/assets/images/pvu/pvu-5.png"
+      "/src/assets/images/pvu/pvu-1.webp",
+      "/src/assets/images/pvu/pvu-2.webp",
+      "/src/assets/images/pvu/pvu-3.webp",
+      "/src/assets/images/pvu/pvu-4.webp",
+      "/src/assets/images/pvu/pvu-5.webp"
     ],
     "youtubeId": "1km0TFlFIIg",
     "repo": "https://github.com/qwertyzxcww/PlantsVsUndead3D",
@@ -117,13 +117,13 @@
     "year": 2024,
     "date": "2024-02",
     "summary": "Учебный 3D-редактор на Unity: пользователь создаёт комнату с заданными параметрами, размещает декор по клеткам пола, поворачивает объекты, перекрашивает стены.",
-    "cover": "/src/assets/images/design/design-cover.png",
+    "cover": "/src/assets/images/design/design-cover.webp",
     "images": [
-      "/src/assets/images/design/design-1.png",
-      "/src/assets/images/design/design-2.png",
-      "/src/assets/images/design/design-3.png",
-      "/src/assets/images/design/design-4.png",
-      "/src/assets/images/design/design-5.png"
+      "/src/assets/images/design/design-1.webp",
+      "/src/assets/images/design/design-2.webp",
+      "/src/assets/images/design/design-3.webp",
+      "/src/assets/images/design/design-4.webp",
+      "/src/assets/images/design/design-5.webp"
     ],
     "youtubeId": "5MQ5Keew2ck",
     "repo": "https://github.com/qwertyzxcww/DesignRoom3D",

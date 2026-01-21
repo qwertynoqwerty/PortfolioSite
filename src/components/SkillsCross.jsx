@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { SiUnity, SiDotnet, SiBlender, SiFigma, SiGit } from "react-icons/si";
+import { TILE } from "../utils/motionPresets";
 
 function IconUltimateXR({ className = "w-12 h-12" }) {
     return (
@@ -23,12 +24,8 @@ function IconMetaAllInOne({ className = "w-12 h-12" }) {
 }
 
 const item = {
-    hidden: { opacity: 0, y: 10 },
-    visible: (i) => ({
-        opacity: 1,
-        y: 0,
-        transition: { delay: i * 0.06, duration: 0.22, ease: "easeOut" },
-    }),
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => TILE(i).show,
 };
 
 function Tile({ icon, label }) {

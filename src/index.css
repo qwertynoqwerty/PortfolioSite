@@ -44,3 +44,16 @@ html, body, #root {
     .btn-ghost { @apply px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-xs md:text-sm; }
     .btn-ghost:disabled { @apply border-white/10 opacity-60 cursor-not-allowed; }
 }
+
+body {
+    overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        scroll-behavior: auto !important;
+        transition-duration: 0ms !important;
+        animation-duration: 0ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

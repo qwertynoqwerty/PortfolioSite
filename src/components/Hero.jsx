@@ -12,7 +12,7 @@ export default function Hero() {
             className="relative min-h-screen flex items-center isolate"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
         >
             {/* нижний мягкий градиент */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-[#0D0D0F]" />
@@ -30,7 +30,7 @@ export default function Hero() {
                         className="relative z-10 text-2xl sm:text-3xl font-semibold text-white/70 mt-2 tracking-wide"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.1, ease: "easeOut", delay: 0.1 }}
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
                     >
                         Maxim Moiseev
                     </motion.h2>
@@ -40,9 +40,9 @@ export default function Hero() {
                         className="relative z-10 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mt-3"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: "easeOut", delay: 0.25 }}
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
                     >
-                        VR / AR Developer
+                        VR / AR Developer 
                     </motion.h1>
 
                     {/* описание */}
@@ -50,11 +50,11 @@ export default function Hero() {
                         className="relative z-10 mt-6 mx-auto max-w-2xl text-white/80 text-lg leading-relaxed"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.1, ease: "easeOut", delay: 0.45 }}
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.45 }}
                     >
                         Проектирую и разрабатываю VR/AR-системы на Unity и C#:
                         интерактив, инструменты, оптимизация и чистая архитектура.
-                        Фокус — UX, производительность и устойчивость проектов.
+                        Фокус - UX, производительность и устойчивость проектов.
                     </motion.p>
 
                 </div>

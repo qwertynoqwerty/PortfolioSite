@@ -4,6 +4,7 @@ import projects from "../data/projects.json";
 import ShowcaseImageModal from "./ShowcaseImageModal";
 import ShowcaseVideoModal from "./ShowcaseVideoModal";
 import SmartImage from "./SmartImage";
+import { SECTION, ITEM, STAGGER } from "../utils/motionPresets";
 
 const formatMonthYear = (dateStr, year) => {
     try {
@@ -23,18 +24,8 @@ const ytId = (val) => {
     return m?.[1] ?? String(val);
 };
 
-const container = {
-    hidden: { opacity: 0, y: 60 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.9, ease: "easeOut", when: "beforeChildren", staggerChildren: 0.12 }
-    }
-};
-const item = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
-};
+const container = { ...SECTION, ...STAGGER(0.12) };
+const item = ITEM;
 
 /**
  * ProjectsShowcase — 5 топ-проектов (featured: true), чередование лево/право.
@@ -108,14 +99,21 @@ export default function ProjectsShowcase() {
                             <div className={`rounded-2xl border border-white/10 bg-white/5 p-1 ${imageLeft ? "" : "md:order-2"}`}>
                                 <div className="overflow-hidden rounded-xl">
                                     {p.cover ? (
-                                        <div className="w-full aspect-[16/9]">
-                                            <SmartImage src={p.cover} alt={p.title} className="w-full h-full object-cover" width={1600} height={900} />                                        
+                                        <div className="w-full aspect-[16/9] bg-black">
+                                            <SmartImage
+                                                src={p.cover}
+                                                alt={p.title}
+                                                className="w-full h-full object-cover bg-black"
+                                                width={1600}
+                                                height={900}
+                                            />
                                         </div>
-                                    ) : <div className="w-full aspect-[16/9] bg-white/5" />}
+
+                                    ) : <div className="w-full aspect-[16/9] bg-white/5"/>}
                                 </div>
 
                                 <div className="flex justify-center gap-3 px-4 py-3">
-                                    <button type="button" onClick={(e) => openImages(e, p)}
+                                <button type="button" onClick={(e) => openImages(e, p)}
                                             disabled={!p.images || p.images.length === 0}
                                             className={`px-3 py-1.5 rounded-lg border text-sm ${p.images?.length ? "border-white/20 hover:bg-white/10" : "border-white/10 opacity-60 cursor-not-allowed"}`}>
                                         Изображения

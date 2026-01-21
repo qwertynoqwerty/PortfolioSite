@@ -10,7 +10,7 @@ export default function Footer() {
                 <div className="flex items-center gap-5">
                     <a
                         className="text-white/80 hover:text-white transition"
-                        href="https://t.me/zxcqwertyww"
+                        href="https://t.me/qwertynoqwerty"
                         target="_blank"
                         rel="noreferrer"
                     >
@@ -18,7 +18,7 @@ export default function Footer() {
                     </a>
                     <a
                         className="text-white/80 hover:text-white transition"
-                        href="https://github.com/qwertyzxcww"
+                        href="https://github.com/qwertynoqwerty"
                         target="_blank"
                         rel="noreferrer"
                     >

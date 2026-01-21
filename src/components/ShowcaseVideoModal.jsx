@@ -12,12 +12,12 @@ export default function ShowcaseVideoModal({ open, onClose, title, youtubeId, in
     return (
         <Transition show={open} as={Fragment}>
             <Dialog onClose={onClose} initialFocus={initialFocusRef} className="relative z-50">
-                <Transition.Child as={Fragment} enter="transition-opacity duration-150" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-150" leaveFrom="opacity-100" leaveTo="opacity-0">
+                <Transition.Child as={Fragment} enter="transition-opacity duration-200" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                     <div className="fixed inset-0 bg-black/70" />
                 </Transition.Child>
 
                 <div className="fixed inset-0 p-4 md:p-8 flex items-center justify-center">
-                    <Transition.Child as={Fragment} enter="transition-transform duration-150" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="transition-transform duration-150" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95">
+                    <Transition.Child as={Fragment} enter="transition-transform duration-200" enterFrom="opacity-0 scale-100" enterTo="opacity-100 scale-100" leave="transition-transform duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-100">
                         <Dialog.Panel className="w-full max-w-6xl rounded-2xl border border-white/10 bg-[#111215]/95 backdrop-blur p-4 md:p-6">
                             <div className="flex items-center justify-between">
                                 <Dialog.Title className="text-lg md:text-xl font-semibold">{title} — видео</Dialog.Title>
