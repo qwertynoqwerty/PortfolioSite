@@ -1,22 +1,18 @@
 ﻿import { useEffect, useRef } from "react";
 
 /**
- * OrbitalOrbsBackground — Canvas-фон с «звёздами/орбитами».
- * Оптимизация:
- * - listeners на window включаются только когда canvas в viewport
- * - cursor обновляется через RAF (без спама событий)
- * - сниженный TARGET_FPS
+ * OrbitalOrbsBackground — СТАТИЧНЫЙ Canvas-фон.
+ * Поведение:
+ * - один раз отрисовали (при появлении/перезайзе) и всё, без движения
+ * - никакого RAF-цикла, никакого движения, никакой реакции на курсор
+ * - лёгкая "появлялка" (opacity transition)
  */
 export default function OrbitalOrbsBackground({
-                                                  countScale = 1.6,
-                                                  mouseRadius = 260,
+                                                  countScale = 1.2,
                                                   hueShift = 210,
-                                                  respondStrength = 0.6,
-                                                  speedScale = 1.15,
                                                   brightness = 0.75,
                                               }) {
     const canvasRef = useRef(null);
-    const rafRef = useRef(0);
 
     useEffect(() => {
         const cv = canvasRef.current;
@@ -24,11 +20,21 @@ export default function OrbitalOrbsBackground({
 
         const ctx = cv.getContext("2d", { alpha: true });
 
-        // ====== БАЗА ======
         const DPR_CAP = 1.6;
         let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
         let w = 0;
         let h = 0;
+
+        const mem = navigator.deviceMemory || 4;
+        const cores = navigator.hardwareConcurrency || 4;
+        const lowPower = mem <= 4 || cores <= 4;
+
+        const prefersReduced =
+            window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
+
+        const qualityFactor =
+            (lowPower ? 0.75 : 1.0) *
+            (prefersReduced ? 0.85 : 1.0);
 
         const resize = () => {
             const parent = cv.parentElement || cv;
@@ -42,128 +48,10 @@ export default function OrbitalOrbsBackground({
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         };
 
-        resize();
-        const ro = new ResizeObserver(resize);
-        ro.observe(cv.parentElement || cv);
+        const dim = (a) => `hsla(${hueShift},14%,62%,${a * brightness})`;
 
-        // ====== REDUCED MOTION / ADAPT ======
-        const prefersReduced =
-            window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
-
-        const mem = navigator.deviceMemory || 4;
-        const cores = navigator.hardwareConcurrency || 4;
-
-        const qualityFactor =
-            (mem >= 8 ? 1 : mem >= 4 ? 0.85 : 0.7) *
-            (cores >= 8 ? 1 : cores >= 4 ? 0.9 : 0.75);
-
-        // ====== ВВОД (cursor) — через RAF, без спама ======
-        const cursor = { x: -9999, y: -9999, active: false };
-        let pendingPointer = null;
-        let pointerRaf = 0;
-
-        const applyPointer = () => {
-            pointerRaf = 0;
-            if (!pendingPointer) return;
-
-            const r = cv.getBoundingClientRect();
-            cursor.x = pendingPointer.x - r.left;
-            cursor.y = pendingPointer.y - r.top;
-            cursor.active = pendingPointer.active;
-
-            pendingPointer = null;
-        };
-
-        const schedulePointer = () => {
-            if (pointerRaf) return;
-            pointerRaf = requestAnimationFrame(applyPointer);
-        };
-
-        const setPointer = (x, y) => {
-            pendingPointer = { x, y, active: true };
-            schedulePointer();
-        };
-
-        const clearPointer = () => {
-            pendingPointer = { x: cursor.x, y: cursor.y, active: false };
-            schedulePointer();
-        };
-
-        // listeners подключаем только при visible=true
-        let listenersOn = false;
-
-        const onMove = (e) => setPointer(e.clientX, e.clientY);
-        const onTouch = (e) => {
-            const t = e.touches?.[0];
-            if (t) setPointer(t.clientX, t.clientY);
-        };
-        const onLeave = () => clearPointer();
-
-        const enableListeners = () => {
-            if (listenersOn) return;
-            listenersOn = true;
-            window.addEventListener("mousemove", onMove, { passive: true });
-            window.addEventListener("touchmove", onTouch, { passive: true });
-            window.addEventListener("mouseout", onLeave, { passive: true });
-            window.addEventListener("touchend", onLeave, { passive: true });
-        };
-
-        const disableListeners = () => {
-            if (!listenersOn) return;
-            listenersOn = false;
-            window.removeEventListener("mousemove", onMove);
-            window.removeEventListener("touchmove", onTouch);
-            window.removeEventListener("mouseout", onLeave);
-            window.removeEventListener("touchend", onLeave);
-        };
-
-        // ====== СЕТКА ЦЕНТРОВ ======
-        const cell = Math.max(180, Math.min(w, h) / 5);
-        const cols = Math.max(2, Math.floor(w / cell));
-        const rows = Math.max(2, Math.floor(h / cell));
-        const centers = [];
-
-        for (let gy = 0; gy < rows; gy++) {
-            for (let gx = 0; gx < cols; gx++) {
-                const cx = (gx + 0.5) * (w / cols);
-                const cy = (gy + 0.5) * (h / rows);
-                centers.push({
-                    x: cx + (Math.random() - 0.5) * (w / cols) * 0.35,
-                    y: cy + (Math.random() - 0.5) * (h / rows) * 0.35,
-                    drift: Math.random() * 0.4 + 0.2,
-                    phase: Math.random() * Math.PI * 2,
-                });
-            }
-        }
-
-        // ====== ЧАСТИЦЫ ======
-        const area = w * h;
-        const baseCount = Math.max(60, Math.round(Math.pow(area / 12000, 0.92)));
-        const COUNT = Math.floor(baseCount * (prefersReduced ? 0.55 : countScale) * qualityFactor);
-
-        const nodes = [];
-        const totalCenters = centers.length;
-
-        for (let i = 0; i < COUNT; i++) {
-            const idx = Math.floor(Math.random() * totalCenters);
-            const baseAvDeg = (Math.random() * 0.32 + 0.16) * (Math.random() < 0.5 ? 1 : -1);
-            const baseAv = ((baseAvDeg * Math.PI) / 180) * speedScale;
-
-            nodes.push({
-                centerIdx: idx,
-                r: 60 + Math.random() * 260,
-                a: Math.random() * Math.PI * 2,
-                av: baseAv,
-                baseAv,
-                size: Math.random() * 2.0 + 1.0,
-                pulse: Math.random() * 0.8 + 0.4,
-                rand: Math.random(),
-            });
-        }
-
-        // ====== СПРАЙТ-СВЕЧЕНИЕ ======
-        const spriteSize = 64;
         const makeSprite = () => {
+            const spriteSize = 64;
             const off =
                 typeof OffscreenCanvas !== "undefined"
                     ? new OffscreenCanvas(spriteSize, spriteSize)
@@ -188,199 +76,109 @@ export default function OrbitalOrbsBackground({
 
             octx.fillStyle = g;
             octx.fillRect(0, 0, spriteSize, spriteSize);
+
             return off;
         };
 
-        const sprite = makeSprite();
-        const dim = (a) => `hsla(${hueShift},14%,62%,${a * brightness})`;
-
-        // ====== ПЛАВНАЯ ПЛОТНОСТЬ РЕНДЕРА ======
-        let renderWeight = 1.0;
-        let renderTarget = 1.0;
-        const LERP = (a, b, t) => a + (b - a) * t;
-        const BLEND_BAND = 0.12;
-
-        const softAlpha = (weight, r) => {
-            const d = weight - r;
-            const t = d / BLEND_BAND + 0.5;
-            return Math.max(0, Math.min(1, t));
-        };
-
-        // ====== FPS CAP + ADAPT ======
-        let running = true;
-        let visible = true;
-
-        let last = performance.now();
-        let lastFpsCheck = last;
-        let fpsFrames = 0;
-
-        const TARGET_FPS = 50;
-        let skipUntil = 0;
-        const mR2 = mouseRadius * mouseRadius;
-
-        const trackFps = (now) => {
-            fpsFrames++;
-            if (now - lastFpsCheck >= 900) {
-                const fps = (fpsFrames * 1000) / (now - lastFpsCheck);
-                if (fps < 46) renderTarget = Math.max(0.35, renderTarget * 0.85);
-                else if (fps > 56) renderTarget = Math.min(1.0, renderTarget * 1.05);
-                lastFpsCheck = now;
-                fpsFrames = 0;
-            }
-        };
-
-        const render = (now) => {
-            if (!running || !visible) return;
-
-            if (now < skipUntil) {
-                rafRef.current = requestAnimationFrame(render);
-                return;
-            }
-
-            const minDelta = 1000 / TARGET_FPS;
-            skipUntil = now + minDelta;
-
-            const dt = Math.min(0.033, (now - last) / 1000);
-            last = now;
-
-            renderWeight = LERP(renderWeight, renderTarget, 0.08);
+        const drawStatic = () => {
+            if (w <= 0 || h <= 0) return;
 
             ctx.clearRect(0, 0, w, h);
 
-            for (let i = 0; i < centers.length; i++) {
-                const c = centers[i];
-                c.phase += 0.6 * c.drift * dt;
-                c.x += Math.cos(c.phase * 0.9) * 2 * dt;
-                c.y += Math.sin(c.phase * 0.7) * 2 * dt;
+            // Центры (фиксированные, без дрейфа)
+            const cell = Math.max(180, Math.min(w, h) / 5);
+            const cols = Math.max(2, Math.floor(w / cell));
+            const rows = Math.max(2, Math.floor(h / cell));
+            const centers = [];
+
+            for (let gy = 0; gy < rows; gy++) {
+                for (let gx = 0; gx < cols; gx++) {
+                    const cx = (gx + 0.5) * (w / cols);
+                    const cy = (gy + 0.5) * (h / rows);
+                    centers.push({
+                        x: cx + (Math.random() - 0.5) * (w / cols) * 0.35,
+                        y: cy + (Math.random() - 0.5) * (h / rows) * 0.35,
+                    });
+                }
             }
 
-            for (let i = 0; i < nodes.length; i++) {
-                const n = nodes[i];
-                const c = centers[n.centerIdx];
+            const area = w * h;
+            const baseCount = Math.max(60, Math.round(Math.pow(area / 12000, 0.92)));
+            const count = Math.floor(baseCount * countScale * qualityFactor);
 
-                n.av = n.av * 0.985 + n.baseAv * 0.015;
-                n.a += n.av * dt;
+            const sprite = makeSprite();
+            const spriteSize = 64;
 
-                const cs = Math.cos(n.a);
-                const sn = Math.sin(n.a);
+            // Рисуем "орбитальные" точки (один кадр, без движения)
+            for (let i = 0; i < count; i++) {
+                const c = centers[Math.floor(Math.random() * centers.length)];
 
-                const nx = c.x + cs * n.r;
-                const ny = c.y + sn * n.r;
+                const r = 60 + Math.random() * 260;
+                const a = Math.random() * Math.PI * 2;
 
-                if (cursor.active) {
-                    const dx = cursor.x - nx;
-                    const dy = cursor.y - ny;
-                    const dist2 = dx * dx + dy * dy;
+                const nx = c.x + Math.cos(a) * r;
+                const ny = c.y + Math.sin(a) * r;
 
-                    if (dist2 < mR2) {
-                        const dist = Math.max(12, Math.sqrt(dist2));
-                        const proj = dx * (-sn) + dy * cs;
-                        n.av +=
-                            (respondStrength * 0.0026) *
-                            (proj / (dist + 1)) *
-                            (1 - dist / mouseRadius);
-                    }
-                }
+                const size = (Math.random() * 2.0 + 1.0) * 3.4;
+                const half = (size * spriteSize) / 64 / 2;
 
-                const aSoft = softAlpha(renderWeight, n.rand);
-                if (aSoft < 0.03) continue;
-
-                const s = n.size * 3.4;
-                const half = (s * spriteSize) / 64 / 2;
-
-                ctx.globalAlpha =
-                    aSoft * (0.5 + Math.sin(now * 0.002 + n.a) * 0.12 * n.pulse) * brightness;
-
+                ctx.globalAlpha = (0.45 + Math.random() * 0.18) * brightness;
                 ctx.drawImage(sprite, nx - half, ny - half, half * 2, half * 2);
             }
 
+            // Лёгкая "пыль" точками
             ctx.globalAlpha = 1;
-            ctx.fillStyle = dim(0.28);
+            ctx.fillStyle = dim(0.26);
             ctx.beginPath();
 
-            for (let i = 0; i < nodes.length; i++) {
-                const n = nodes[i];
-                if (softAlpha(renderWeight, n.rand) < 0.25) continue;
-
-                const c = centers[n.centerIdx];
-                const cs = Math.cos(n.a);
-                const sn = Math.sin(n.a);
-                const nx = c.x + cs * n.r;
-                const ny = c.y + sn * n.r;
-
-                const r = n.size * 0.6;
-                ctx.moveTo(nx + r, ny);
-                ctx.arc(nx, ny, r, 0, Math.PI * 2);
+            const dustCount = Math.floor(count * 0.35);
+            for (let i = 0; i < dustCount; i++) {
+                const x = Math.random() * w;
+                const y = Math.random() * h;
+                const r = 0.6 + Math.random() * 0.6;
+                ctx.moveTo(x + r, y);
+                ctx.arc(x, y, r, 0, Math.PI * 2);
             }
 
             ctx.fill();
-
-            trackFps(now);
-            rafRef.current = requestAnimationFrame(render);
+            ctx.globalAlpha = 1;
         };
 
-        // ====== VISIBILITY + IO ======
-        const onVisibility = () => {
-            if (document.hidden) {
-                running = false;
-                cancelAnimationFrame(rafRef.current);
-            } else {
-                if (!running) {
-                    running = true;
-                    last = performance.now();
-                    lastFpsCheck = last;
-                    fpsFrames = 0;
-                    rafRef.current = requestAnimationFrame(render);
-                }
-            }
+        // Resize + draw
+        resize();
+        drawStatic();
+
+        // Плавное появление (один раз)
+        cv.style.opacity = "0";
+        cv.style.transition = prefersReduced ? "none" : "opacity 350ms ease-out";
+        requestAnimationFrame(() => {
+            cv.style.opacity = "1";
+        });
+
+        const ro = new ResizeObserver(() => {
+            resize();
+            drawStatic();
+        });
+        ro.observe(cv.parentElement || cv);
+
+        // Если хочешь ещё легче — можно убрать этот listener
+        const onDpr = () => {
+            resize();
+            drawStatic();
         };
-
-        document.addEventListener("visibilitychange", onVisibility);
-
-        const io = new IntersectionObserver(
-            (entries) => {
-                const e = entries[0];
-                visible = e?.isIntersecting ?? true;
-
-                if (visible) {
-                    enableListeners();
-                } else {
-                    disableListeners();
-                }
-
-                if (visible && running) {
-                    last = performance.now();
-                    lastFpsCheck = last;
-                    fpsFrames = 0;
-                    rafRef.current = requestAnimationFrame(render);
-                } else {
-                    cancelAnimationFrame(rafRef.current);
-                }
-            },
-            { root: null, threshold: 0.02 }
-        );
-
-        io.observe(cv);
-
-        // старт
-        enableListeners();
-        last = performance.now();
-        lastFpsCheck = last;
-        fpsFrames = 0;
-        rafRef.current = requestAnimationFrame(render);
+        window.addEventListener("resize", onDpr, { passive: true });
 
         return () => {
-            document.removeEventListener("visibilitychange", onVisibility);
-            cancelAnimationFrame(rafRef.current);
-
-            io.disconnect();
             ro.disconnect();
-
-            disableListeners();
-
-            if (pointerRaf) cancelAnimationFrame(pointerRaf);
+            window.removeEventListener("resize", onDpr);
         };
-    }, [countScale, mouseRadius, hueShift, respondStrength, speedScale, brightness]);
+    }, [countScale, hueShift, brightness]);
 
-    return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none" aria-hidden="true" />;
+    return (
+        <canvas
+            ref={canvasRef}
+            className="fixed inset-0 w-full h-full pointer-events-none"
+            aria-hidden="true"
+        />
+    );
 }
