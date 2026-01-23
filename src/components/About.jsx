@@ -64,25 +64,25 @@ export default function About() {
                     <div className="mt-8 max-w-[640px] text-[18px] leading-relaxed text-white/85">
 
                         <p>
-                            Работаю с VR/AR на Unity: создаю взаимодействия, интерфейсы,
-                            инструменты и системную логику. Фокус - стабильность, UX
-                            и высокая производительность.
+                            Работаю с VR/AR на Unity: реализую пользовательские взаимодействия,
+                            интерфейсы и системную логику для VR/MR-приложений.
                         </p>
 
                         <p className="mt-4 text-white/75">
-                            Оптимизирую сцены, освещение и ресурсы. Выстраиваю аккуратную,
-                            читаемую и поддерживаемую архитектуру - надёжную в долгосрочных проектах.
+                            Пространственная логика сцены, интерактивные элементы и пользовательские состояния,
+                            а также настройка UI и взаимодействий под реальные устройства.
                         </p>
+
 
                     </div>
                 </motion.div>
 
                 {/* Правая колонка — навыки */}
                 <motion.div
-                    initial={{ opacity: 0, x: 40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
+                    initial={{opacity: 0, x: 40}}
+                    whileInView={{opacity: 1, x: 0}}
+                    viewport={{once: true, amount: 0.3}}
+                    transition={{duration: 1, ease: "easeOut", delay: 0.1 }}
                     className="flex justify-center lg:justify-end"
                 >
                     <div className="w-full max-w-[640px]">

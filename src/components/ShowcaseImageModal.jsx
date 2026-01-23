@@ -7,6 +7,9 @@ import SmartImage from "./SmartImage";
  * ShowcaseImageModal
  * 1) Галерея (сеткой)
  * 2) Viewer (полноформат): верхняя панель ВСЕГДА сверху, фото ВСЕГДА по центру
+ * Исправления:
+ * - Навигация 1..N без зацикливания, кнопки отключаются на границах
+ * - Закрытие viewer по клику на пустое место (вне контента)
  */
 export default function ShowcaseImageModal({ open, title, images = [], onClose, initialFocusRef }) {
     useLockBodyScroll(open);
@@ -47,8 +50,6 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
 
         if (viewerIndex > 0) {
             setViewerIndex(viewerIndex - 1);
-        } else {
-            setViewerIndex(list.length - 1);
         }
     };
 
@@ -59,16 +60,21 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
 
         if (viewerIndex < list.length - 1) {
             setViewerIndex(viewerIndex + 1);
-        } else {
-            setViewerIndex(0);
         }
     };
 
     const currentSrc = list.length > 0 ? list[viewerIndex] : "";
 
+    const atFirst = viewerIndex <= 0;
+    const atLast = list.length > 0 ? viewerIndex >= list.length - 1 : true;
+
+    const navBtnBase = "px-3 py-1.5 rounded-lg border text-sm";
+    const navBtnEnabled = "border-white/20 hover:bg-white/10";
+    const navBtnDisabled = "border-white/10 opacity-50 cursor-not-allowed";
+
     return (
         <>
-            {/* GALLEY MODAL */}
+            {/* GALLERY MODAL */}
             <Transition appear show={open} as={Fragment}>
                 <Dialog
                     as="div"
@@ -89,7 +95,6 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
-                        {/* ВАЖНО: всегда по центру */}
                         <div className="flex min-h-screen items-center justify-center px-6 py-10">
                             <Transition.Child
                                 as={Fragment}
@@ -166,9 +171,10 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                 </Dialog>
             </Transition>
 
-            {/* VIEWER MODAL: header всегда сверху, фото всегда по центру */}
+            {/* VIEWER MODAL */}
             <Transition appear show={viewerOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-[120]" onClose={closeViewer} initialFocus={closeViewerRef}>
+                    {/* Backdrop: только визуал, клики не перехватывает */}
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-200"
@@ -178,13 +184,16 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black/85 backdrop-blur-[2px]" />
+                        <div className="fixed inset-0 bg-black/85 backdrop-blur-[2px] pointer-events-none" />
                     </Transition.Child>
 
-                    {/* фиксированная обёртка viewer на весь экран */}
-                    <div className="fixed inset-0">
-                        {/* Верхняя панель — всегда сверху */}
-                        <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-4">
+                    {/* Кликабельный слой на весь экран: клик по пустому месту закрывает */}
+                    <div className="fixed inset-0" onClick={closeViewer}>
+                        {/* Верхняя панель (клик по ней не закрывает) */}
+                        <div
+                            className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-4"
+                            onClick={(e) => e.stopPropagation()}
+                        >
                             <div className="text-xs md:text-sm text-white/80">
                                 {title} — {list.length > 0 ? `${viewerIndex + 1}/${list.length}` : ""}
                             </div>
@@ -193,47 +202,44 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                 <button
                                     type="button"
                                     onClick={goPrev}
-                                    className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                    disabled={atFirst}
+                                    className={`${navBtnBase} ${atFirst ? navBtnDisabled : navBtnEnabled}`}
                                 >
                                     ‹
                                 </button>
+
                                 <button
                                     type="button"
                                     onClick={goNext}
-                                    className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                    disabled={atLast}
+                                    className={`${navBtnBase} ${atLast ? navBtnDisabled : navBtnEnabled}`}
                                 >
                                     ›
                                 </button>
+
                                 <button
                                     ref={closeViewerRef}
                                     type="button"
                                     onClick={closeViewer}
-                                    className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                    className={`${navBtnBase} ${navBtnEnabled}`}
                                 >
                                     Закрыть
                                 </button>
                             </div>
                         </div>
 
-                        {/* Контент — фото по центру, верхняя панель не влияет */}
+                        {/* Центр: фото (клик по фото/рамке не закрывает) */}
                         <div className="flex h-full w-full items-center justify-center px-4 md:px-8 pt-16 pb-8">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="ease-out duration-200"
-                                enterFrom="opacity-0 scale-95"
-                                enterTo="opacity-100 scale-100"
-                                leave="ease-in duration-200"
-                                leaveFrom="opacity-100 scale-100"
-                                leaveTo="opacity-0 scale-95"
+                            <div
+                                className="rounded-2xl border border-white/10 bg-black/30 p-2 md:p-3"
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <div className="rounded-2xl border border-white/10 bg-black/30 p-2 md:p-3">
-                                    <SmartImage
-                                        src={currentSrc}
-                                        alt=""
-                                        className="max-w-[92vw] max-h-[80vh] object-contain bg-black rounded-xl"
-                                    />
-                                </div>
-                            </Transition.Child>
+                                <SmartImage
+                                    src={currentSrc}
+                                    alt=""
+                                    className="max-w-[92vw] max-h-[80vh] object-contain bg-black rounded-xl"
+                                />
+                            </div>
                         </div>
                     </div>
                 </Dialog>

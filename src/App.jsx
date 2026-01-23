@@ -20,14 +20,14 @@ export default function App() {
             <OrbitalOrbsBackground />
 
             <main>
-                <section className="h-screen flex items-center justify-center">
-                    <Hero />
+                <section className="min-h-[100svh] flex items-center justify-center">
+                    <Hero/>
                 </section>
 
                 <SectionDivider />
 
-                <section className="h-screen flex items-center justify-center">
-                    <About />
+                <section className="min-h-[100svh] flex items-center justify-center">
+                    <About/>
                 </section>
 
                 <SectionDivider />

@@ -4,24 +4,27 @@ import projects from "../data/projects.json";
 import ProjectCard from "./ProjectCard";
 import ShowcaseImageModal from "./ShowcaseImageModal";
 import ShowcaseVideoModal from "./ShowcaseVideoModal";
-import { SECTION } from "../utils/motionPresets";
-
-
-/**
- * CatalogCarousel — горизонтальная лента «остальных» проектов.
- * Управление лентой — ТОЛЬКО кнопками ←/→.
- * Колёсико мыши и вертикальный скролл страницы — ДОЛЖНЫ работать даже при наведении на каталог.
- * Шаг прокрутки = ширина карточки + gap, вычисляется динамически.
- * Плавность — через requestAnimationFrame (без рывков behavior: "smooth").
- */
-const containerAnim = SECTION;
-
 
 const ytId = (v) => {
     if (!v) return "";
     const m = String(v).match(/(?:v=|youtu\.be\/|embed\/)([\w-]{6,})/);
     return m?.[1] ?? String(v);
 };
+
+const sectionIn = {
+    initial: { opacity: 0, y: 60 },
+    inView: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
+const headerIn = {
+    initial: { opacity: 0, y: 30 },
+    inView: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+};
+
+const pop = (delay) => ({
+    initial: { opacity: 0, y: 18 },
+    inView: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut", delay } },
+});
 
 export default function CatalogCarousel() {
     const items = useMemo(() => projects.filter((p) => !p.featured), []);
@@ -94,8 +97,7 @@ export default function CatalogCarousel() {
 
         const tick = (now) => {
             const t = Math.min(1, (now - t0) / durationMs);
-            const eased = easeInOutCubic(t);
-            el.scrollLeft = startLeft + delta * eased;
+            el.scrollLeft = startLeft + delta * easeInOutCubic(t);
 
             if (t < 1) {
                 rafRef.current = requestAnimationFrame(tick);
@@ -124,8 +126,8 @@ export default function CatalogCarousel() {
             if (!firstCell) return;
 
             const cellRect = firstCell.getBoundingClientRect();
-
             const trackStyle = getComputedStyle(track);
+
             const gap =
                 parseFloat(trackStyle.columnGap || "0") ||
                 parseFloat(trackStyle.gap || "0") ||
@@ -165,8 +167,7 @@ export default function CatalogCarousel() {
         if (!rail) return;
 
         const step = stepRef.current || 600;
-        const target = rail.scrollLeft + dir * step;
-        animateScrollTo(rail, target);
+        animateScrollTo(rail, rail.scrollLeft + dir * step);
     };
 
     if (items.length === 0) return null;
@@ -175,86 +176,98 @@ export default function CatalogCarousel() {
         <motion.section
             id="catalog"
             className="mx-auto max-w-[100rem] px-4 md:px-8 pt-8 pb-28"
-            variants={containerAnim}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
+            initial={sectionIn.initial}
+            whileInView={sectionIn.inView}
+            viewport={{ once: true, amount: 0.22 }}
         >
-            <div className="mb-10 text-center">
-                <h2 className="text-[40px] md:text-[48px] font-bold leading-none">
-                    Каталог
-                </h2>
+            {/* Заголовок */}
+            <motion.div
+                className="mb-10 text-center"
+                initial={headerIn.initial}
+                whileInView={headerIn.inView}
+                viewport={{ once: true, amount: 0.65 }}
+            >
+                <h2 className="text-[40px] md:text-[48px] font-bold leading-none">Каталог</h2>
                 <div className="mt-3 flex flex-col items-center gap-2">
                     <div className="h-[3px] w-40 bg-white/30 rounded-full" />
                     <div className="h-[3px] w-32 bg-white/20 rounded-full" />
                     <div className="h-[3px] w-48 bg-white/15 rounded-full" />
                 </div>
-            </div>
+            </motion.div>
 
             <div className="relative overflow-visible">
-                <div
-                    ref={railRef}
-                    className="relative z-20 overflow-x-hidden overflow-y-hidden py-2 [scrollbar-width:none] [-ms-overflow-style:none]"
-                    style={{
-                        WebkitOverflowScrolling: "touch",
-                        overscrollBehaviorX: "contain",
-                        overscrollBehaviorY: "none",
-                        touchAction: "pan-y",
-                    }}
-                    aria-label="Лента проектов каталога"
-                >
-                    <style>{`[data-hide-scrollbar]::-webkit-scrollbar{display:none}`}</style>
-
-                    <div
-                        ref={trackRef}
-                        data-hide-scrollbar
-                        className="flex items-stretch gap-5 md:gap-6 lg:gap-8"
-                    >
-                        {items.map((p, i) => (
-                            <div
-                                key={p.id}
-                                data-card-cell={i === 0 ? "1" : "0"}
-                                className="shrink-0"
-                            >
-                                <ProjectCard
-                                    project={p}
-                                    compact
-                                    onOpenImages={(e) => openImages(e, p)}
-                                    onOpenVideo={(e) => openVideo(e, p)}
-                                    onOpenRepo={(e) => openRepo(e, p)}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <button
+                {/* 1) Левая кнопка */}
+                <motion.button
                     type="button"
                     aria-label="Назад"
                     title="Назад"
                     onClick={() => scrollByStep(-1)}
                     disabled={atStart}
+                    initial={pop(0.00).initial}
+                    whileInView={pop(0.00).inView}
+                    viewport={{ once: true, amount: 0.25 }}
                     className={`absolute z-40 -left-8 md:-left-10 top-1/2 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 px-3 py-3 backdrop-blur text-lg leading-none shadow-lg transition-opacity ${
-                        atStart
-                            ? "opacity-40 cursor-not-allowed pointer-events-none"
-                            : "hover:bg-white/20"
+                        atStart ? "opacity-40 cursor-not-allowed pointer-events-none" : "hover:bg-white/20"
                     }`}
                 >
                     ‹
-                </button>
+                </motion.button>
 
-                <button
+                {/* 2) Каталог (лента) */}
+                <motion.div
+                    initial={pop(0.12).initial}
+                    whileInView={pop(0.12).inView}
+                    viewport={{ once: true, amount: 0.20 }}
+                >
+                    <div
+                        ref={railRef}
+                        className="relative z-20 overflow-x-hidden overflow-y-hidden py-2 [scrollbar-width:none] [-ms-overflow-style:none]"
+                        style={{
+                            WebkitOverflowScrolling: "touch",
+                            overscrollBehaviorX: "contain",
+                            overscrollBehaviorY: "auto",
+                            touchAction: "pan-y",
+                        }}
+                        aria-label="Лента проектов каталога"
+                        onWheelCapture={(e) => {
+                            // Важно: не preventDefault — колесо остаётся для скролла страницы
+                            e.stopPropagation();
+                        }}
+                    >
+                        <style>{`[data-hide-scrollbar]::-webkit-scrollbar{display:none}`}</style>
+
+                        <div ref={trackRef} data-hide-scrollbar className="flex items-stretch gap-5 md:gap-6 lg:gap-8">
+                            {items.map((p, i) => (
+                                <div key={p.id} data-card-cell={i === 0 ? "1" : "0"} className="shrink-0">
+                                    <ProjectCard
+                                        project={p}
+                                        compact
+                                        onOpenImages={(ev) => openImages(ev, p)}
+                                        onOpenVideo={(ev) => openVideo(ev, p)}
+                                        onOpenRepo={(ev) => openRepo(ev, p)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* 3) Правая кнопка */}
+                <motion.button
                     type="button"
                     aria-label="Вперёд"
                     title="Вперёд"
                     onClick={() => scrollByStep(1)}
                     disabled={atEnd}
+                    initial={pop(0.24).initial}
+                    whileInView={pop(0.24).inView}
+                    viewport={{ once: true, amount: 0.25 }}
                     className={`absolute z-40 -right-8 md:-right-10 top-1/2 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 px-3 py-3 backdrop-blur text-lg leading-none shadow-lg transition-opacity ${
                         atEnd ? "opacity-40 cursor-not-allowed" : "hover:bg-white/20"
                     }`}
                 >
                     ›
-                </button>
+                </motion.button>
             </div>
 
             <ShowcaseImageModal
