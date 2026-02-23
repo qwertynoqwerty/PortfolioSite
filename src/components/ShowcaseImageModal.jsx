@@ -1,21 +1,12 @@
-﻿import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import useLockBodyScroll from "../utils/useLockBodyScroll";
 import SmartImage from "./SmartImage";
 
-/**
- * ShowcaseImageModal
- * 1) Галерея (сеткой)
- * 2) Viewer (полноформат): верхняя панель ВСЕГДА сверху, фото ВСЕГДА по центру
- * Исправления:
- * - Навигация 1..N без зацикливания, кнопки отключаются на границах
- * - Закрытие viewer по клику на пустое место (вне контента)
- */
 export default function ShowcaseImageModal({ open, title, images = [], onClose, initialFocusRef }) {
     useLockBodyScroll(open);
 
     const list = useMemo(() => (Array.isArray(images) ? images : []), [images]);
-
     const [viewerOpen, setViewerOpen] = useState(false);
     const [viewerIndex, setViewerIndex] = useState(0);
 
@@ -23,19 +14,19 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
     const closeViewerRef = useRef(null);
 
     useEffect(() => {
-        if (open == false) {
+        if (!open) {
             setViewerOpen(false);
             setViewerIndex(0);
         }
     }, [open]);
 
     const openViewer = (index) => {
-        if (list.length == 0) {
+        if (list.length === 0) {
             return;
         }
 
-        const safe = Math.max(0, Math.min(index, list.length - 1));
-        setViewerIndex(safe);
+        const safeIndex = Math.max(0, Math.min(index, list.length - 1));
+        setViewerIndex(safeIndex);
         setViewerOpen(true);
     };
 
@@ -44,37 +35,47 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
     };
 
     const goPrev = () => {
-        if (list.length == 0) {
-            return;
-        }
-
-        if (viewerIndex > 0) {
-            setViewerIndex(viewerIndex - 1);
-        }
+        setViewerIndex((prev) => Math.max(0, prev - 1));
     };
 
     const goNext = () => {
-        if (list.length == 0) {
-            return;
-        }
-
-        if (viewerIndex < list.length - 1) {
-            setViewerIndex(viewerIndex + 1);
-        }
+        setViewerIndex((prev) => Math.min(list.length - 1, prev + 1));
     };
 
     const currentSrc = list.length > 0 ? list[viewerIndex] : "";
-
     const atFirst = viewerIndex <= 0;
     const atLast = list.length > 0 ? viewerIndex >= list.length - 1 : true;
 
     const navBtnBase = "px-3 py-1.5 rounded-lg border text-sm";
     const navBtnEnabled = "border-white/20 hover:bg-white/10";
     const navBtnDisabled = "border-white/10 opacity-50 cursor-not-allowed";
+    const rowPattern = [2, 3];
+
+    const rows = useMemo(() => {
+        const result = [];
+        let offset = 0;
+        let patternIndex = 0;
+
+        while (offset < list.length) {
+            const desired = rowPattern[patternIndex % rowPattern.length];
+            const remaining = list.length - offset;
+            const size = Math.min(desired, remaining);
+
+            result.push({
+                count: size,
+                startIndex: offset,
+                items: list.slice(offset, offset + size),
+            });
+
+            offset += size;
+            patternIndex += 1;
+        }
+
+        return result;
+    }, [list]);
 
     return (
         <>
-            {/* GALLERY MODAL */}
             <Transition appear show={open} as={Fragment}>
                 <Dialog
                     as="div"
@@ -112,8 +113,9 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                         </Dialog.Title>
                                         <button
                                             ref={closeGalleryRef}
+                                            type="button"
                                             onClick={onClose}
-                                            className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+                                            className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm focus:outline-none focus-visible:outline-none"
                                         >
                                             Закрыть
                                         </button>
@@ -123,46 +125,32 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                         Нажмите на изображение, чтобы открыть в полном размере
                                     </div>
 
-                                    {/* сетка: 2 / 3 / 2 */}
                                     <div className="mt-5 grid gap-4">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            {list.slice(0, 2).map((src, i) => (
-                                                <button
-                                                    key={`top-${i}`}
-                                                    type="button"
-                                                    onClick={() => openViewer(i)}
-                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
-                                                >
-                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover bg-black" />
-                                                </button>
-                                            ))}
-                                        </div>
+                                        {rows.map((row, rowIndex) => (
+                                            <div
+                                                key={`row-${rowIndex}-${row.startIndex}`}
+                                                className={`grid grid-cols-1 gap-4 ${row.count === 1 ? "md:grid-cols-1" : row.count === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}
+                                            >
+                                                {row.items.map((src, indexInRow) => {
+                                                    const imageIndex = row.startIndex + indexInRow;
 
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            {list.slice(2, 5).map((src, i) => (
-                                                <button
-                                                    key={`mid-${i}`}
-                                                    type="button"
-                                                    onClick={() => openViewer(i + 2)}
-                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
-                                                >
-                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover bg-black" />
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            {list.slice(5, 7).map((src, i) => (
-                                                <button
-                                                    key={`bot-${i}`}
-                                                    type="button"
-                                                    onClick={() => openViewer(i + 5)}
-                                                    className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01]"
-                                                >
-                                                    <SmartImage src={src} alt="" className="w-full h-full object-cover bg-black" />
-                                                </button>
-                                            ))}
-                                        </div>
+                                                    return (
+                                                        <button
+                                                            key={`${src}-${imageIndex}`}
+                                                            type="button"
+                                                            onClick={() => openViewer(imageIndex)}
+                                                            className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01] focus:outline-none focus-visible:outline-none"
+                                                        >
+                                                            <SmartImage
+                                                                src={src}
+                                                                alt={`${title} ${imageIndex + 1}`}
+                                                                className="w-full h-full object-cover bg-black"
+                                                            />
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        ))}
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
@@ -171,10 +159,8 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                 </Dialog>
             </Transition>
 
-            {/* VIEWER MODAL */}
             <Transition appear show={viewerOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-[120]" onClose={closeViewer} initialFocus={closeViewerRef}>
-                    {/* Backdrop: только визуал, клики не перехватывает */}
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-200"
@@ -187,15 +173,13 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                         <div className="fixed inset-0 bg-black/85 backdrop-blur-[2px] pointer-events-none" />
                     </Transition.Child>
 
-                    {/* Кликабельный слой на весь экран: клик по пустому месту закрывает */}
                     <div className="fixed inset-0" onClick={closeViewer}>
-                        {/* Верхняя панель (клик по ней не закрывает) */}
                         <div
                             className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-4"
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={(event) => event.stopPropagation()}
                         >
                             <div className="text-xs md:text-sm text-white/80">
-                                {title} — {list.length > 0 ? `${viewerIndex + 1}/${list.length}` : ""}
+                                {title} {list.length > 0 ? `— ${viewerIndex + 1}/${list.length}` : ""}
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -203,7 +187,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                     type="button"
                                     onClick={goPrev}
                                     disabled={atFirst}
-                                    className={`${navBtnBase} ${atFirst ? navBtnDisabled : navBtnEnabled}`}
+                                    className={`${navBtnBase} ${atFirst ? navBtnDisabled : navBtnEnabled} focus:outline-none focus-visible:outline-none`}
                                 >
                                     ‹
                                 </button>
@@ -212,7 +196,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                     type="button"
                                     onClick={goNext}
                                     disabled={atLast}
-                                    className={`${navBtnBase} ${atLast ? navBtnDisabled : navBtnEnabled}`}
+                                    className={`${navBtnBase} ${atLast ? navBtnDisabled : navBtnEnabled} focus:outline-none focus-visible:outline-none`}
                                 >
                                     ›
                                 </button>
@@ -221,22 +205,21 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                     ref={closeViewerRef}
                                     type="button"
                                     onClick={closeViewer}
-                                    className={`${navBtnBase} ${navBtnEnabled}`}
+                                    className={`${navBtnBase} ${navBtnEnabled} focus:outline-none focus-visible:outline-none`}
                                 >
                                     Закрыть
                                 </button>
                             </div>
                         </div>
 
-                        {/* Центр: фото (клик по фото/рамке не закрывает) */}
                         <div className="flex h-full w-full items-center justify-center px-4 md:px-8 pt-16 pb-8">
                             <div
                                 className="rounded-2xl border border-white/10 bg-black/30 p-2 md:p-3"
-                                onClick={(e) => e.stopPropagation()}
+                                onClick={(event) => event.stopPropagation()}
                             >
                                 <SmartImage
                                     src={currentSrc}
-                                    alt=""
+                                    alt={title || ""}
                                     className="max-w-[92vw] max-h-[80vh] object-contain bg-black rounded-xl"
                                 />
                             </div>

@@ -22,7 +22,7 @@ export default function ShowcaseVideoModal({ open, onClose, title, youtubeId, in
                             <div className="flex items-center justify-between">
                                 <Dialog.Title className="text-lg md:text-xl font-semibold">{title} — видео</Dialog.Title>
                                 <button ref={initialFocusRef} type="button" onClick={onClose}
-                                        className="text-sm px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10">
+                                        className="text-sm px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10 focus:outline-none focus-visible:outline-none">
                                     Закрыть
                                 </button>
                             </div>

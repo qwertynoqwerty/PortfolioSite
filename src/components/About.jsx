@@ -1,11 +1,8 @@
 import { motion } from "framer-motion";
 import SkillsCross from "./SkillsCross";
+import SectionTitle from "./SectionTitle";
+import { SECTION_IN, SLIDE_IN_LEFT, SLIDE_IN_RIGHT } from "../utils/motionPresets";
 
-/**
- * About — блок «Обо мне».
- * Левая колонка — иллюстрация + текст.
- * Правая колонка — сетка навыков.
- */
 function CapsuleIllustration() {
     return (
         <div className="flex justify-center w-full">
@@ -33,63 +30,44 @@ export default function About() {
         <motion.section
             id="about"
             className="relative min-h-[92vh] flex flex-col justify-center py-20"
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={SECTION_IN.hidden}
+            whileInView={SECTION_IN.show}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
         >
-            {/* Заголовок + линии */}
-            <div className="mx-auto max-w-[100rem] px-6 mb-14 -translate-y-16 md:-translate-y-20 text-center">
-                <h2 className="text-[40px] md:text-[48px] font-bold leading-none">Обо мне</h2>
-                <div className="mt-3 flex flex-col items-center gap-2">
-                    <div className="h-[3px] w-40 bg-white/30 rounded-full" />
-                    <div className="h-[3px] w-32 bg-white/20 rounded-full" />
-                    <div className="h-[3px] w-48 bg-white/15 rounded-full" />
-                </div>
-            </div>
+            <SectionTitle title="Обо мне" className="mx-auto max-w-[100rem] px-6 mb-14 -translate-y-16 md:-translate-y-20 text-center" />
 
-            {/* Колонки */}
             <div className="mx-auto max-w-[100rem] px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-40 xl:gap-56 items-center">
-
-                {/* Левая колонка */}
                 <motion.div
-                    initial={{ opacity: 0, x: -40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={SLIDE_IN_LEFT.hidden}
+                    whileInView={SLIDE_IN_LEFT.show}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
                     className="flex flex-col items-center lg:items-start text-left"
                 >
                     <CapsuleIllustration />
 
                     <div className="mt-8 max-w-[640px] text-[18px] leading-relaxed text-white/85">
-
                         <p>
-                            Работаю с VR/AR на Unity: реализую пользовательские взаимодействия,
-                            интерфейсы и системную логику для VR/MR-приложений.
+                            Работаю с VR/AR на Unity: реализую пользовательские взаимодействия, интерфейсы и системную
+                            логику для VR/MR-приложений.
                         </p>
 
                         <p className="mt-4 text-white/75">
-                            Пространственная логика сцены, интерактивные элементы и пользовательские состояния,
-                            а также настройка UI и взаимодействий под реальные устройства.
+                            Пространственная логика сцены, интерактивные элементы и пользовательские состояния, а также
+                            настройка UI и взаимодействий под реальные устройства.
                         </p>
-
-
                     </div>
                 </motion.div>
 
-                {/* Правая колонка — навыки */}
                 <motion.div
-                    initial={{opacity: 0, x: 40}}
-                    whileInView={{opacity: 1, x: 0}}
-                    viewport={{once: true, amount: 0.3}}
-                    transition={{duration: 1, ease: "easeOut", delay: 0.1 }}
+                    initial={SLIDE_IN_RIGHT.hidden}
+                    whileInView={SLIDE_IN_RIGHT.show}
+                    viewport={{ once: true, amount: 0.3 }}
                     className="flex justify-center lg:justify-end"
                 >
                     <div className="w-full max-w-[640px]">
                         <SkillsCross />
                     </div>
                 </motion.div>
-
             </div>
         </motion.section>
     );

@@ -1,11 +1,11 @@
-﻿import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 export default function InfinityAccent({
-                                           width = 980,
-                                           height = 480,
-                                           thickness = 64,
-                                           opacity = 0.68,
-                                       }) {
+    width = 980,
+    height = 480,
+    thickness = 64,
+    opacity = 0.68,
+}) {
     const reduce =
         typeof window !== "undefined"
             ? window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false
@@ -15,7 +15,7 @@ export default function InfinityAccent({
     const cores = typeof navigator !== "undefined" ? (navigator.hardwareConcurrency || 4) : 4;
 
     const lowPower = mem <= 4 || cores <= 4;
-    const allowAnim = reduce == false && lowPower == false;
+    const allowAnim = reduce === false && lowPower === false;
 
     const pathData = useMemo(() => {
         const w = width;
@@ -25,10 +25,10 @@ export default function InfinityAccent({
         const pad = Math.max(thickness, 40);
         const a = Math.min((w - pad * 2) / 2.4, (h - pad * 2) / 1.2);
 
-        const N = 540; // было 720 — легче
+        const n = 540;
         const pts = [];
-        for (let i = 0; i <= N; i++) {
-            const t = (i / N) * Math.PI * 2;
+        for (let i = 0; i <= n; i += 1) {
+            const t = (i / n) * Math.PI * 2;
             const s = Math.sin(t);
             const c = Math.cos(t);
             const denom = 1 + s * s;
@@ -38,7 +38,7 @@ export default function InfinityAccent({
         }
 
         let d = `M ${pts[0][0].toFixed(2)} ${pts[0][1].toFixed(2)}`;
-        for (let i = 1; i < pts.length; i++) {
+        for (let i = 1; i < pts.length; i += 1) {
             d += ` L ${pts[i][0].toFixed(2)} ${pts[i][1].toFixed(2)}`;
         }
         d += " Z";

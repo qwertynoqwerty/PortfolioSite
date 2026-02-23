@@ -2,51 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-/* Базовая тема через Tailwind токены */
-body  { @apply bg-bg text-text antialiased font-inter; }
-
-/* Акцент "бесконечность": мягкое движение */
-@keyframes infinity-rot   { 0% { transform: rotate(0deg) } 100% { transform: rotate(360deg) } }
-@keyframes infinity-drift { 0% { transform: translateY(-6px) } 50% { transform: translateY(6px) } 100% { transform: translateY(-6px) } }
-@keyframes infinity-pulse { 0% { transform: scale(0.985) } 50% { transform: scale(1.015) } 100% { transform: scale(0.985) } }
-
-@layer utilities {
-    .animate-infinity {
-        animation:
-                infinity-rot 26s linear infinite,
-                infinity-drift 9s ease-in-out infinite,
-                infinity-pulse 7s ease-in-out infinite;
-    }
+:root {
+    color-scheme: dark;
 }
 
-/* На десктопах оставляем системный курсор */
-@media (pointer: fine) {
-    body { cursor: auto; }
+body {
+    @apply bg-bg text-text antialiased font-inter;
 }
 
-/* Доступность: при отключённых анимациях — не анимируем акцент */
-@media (prefers-reduced-motion: reduce) {
-    .animate-infinity {
-        animation: none !important;
-    }
-}
-
-html, body, #root {
+html,
+body,
+#root {
     height: 100%;
-    background: #0D0D0F;
-    color: #EAEAEA;
-}
-
-@layer components {
-    .card { @apply rounded-2xl border border-white/10 bg-white/[0.05] p-1; }
-    .card-inner { @apply overflow-hidden rounded-xl; }
-    .btn-ghost { @apply px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-xs md:text-sm; }
-    .btn-ghost:disabled { @apply border-white/10 opacity-60 cursor-not-allowed; }
+    background: #0d0d0f;
+    color: #eaeaea;
 }
 
 body {
     overflow-x: hidden;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+}
+
+@media (pointer: fine) {
+    body {
+        cursor: auto;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -58,86 +51,98 @@ body {
     }
 }
 
-/* =========================================================
-   RESPONSIVE OVERRIDES (mobile != desktop)
-   ========================================================= */
-
-/* Глобальная защита от горизонтального скролла */
-html, body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: clip;
-}
-@supports not (overflow: clip) {
-    html, body { overflow-x: hidden; }
+@layer utilities {
+    .hide-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
 }
 
-/* MOBILE (<= 640px) */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
 @media (max-width: 640px) {
     :root {
         --mobile-pad: 16px;
         --mobile-gap: 12px;
     }
 
-    main { overflow-x: clip; }
-    section { padding-left: var(--mobile-pad); padding-right: var(--mobile-pad); }
+    main {
+        overflow-x: clip;
+    }
 
-    /* HERO tighter typography */
-    #hero .max-w-6xl { padding-left: var(--mobile-pad); padding-right: var(--mobile-pad); }
-    #hero h1 { font-size: 40px; line-height: 1.05; }
-    #hero h2 { font-size: 18px; }
-    #hero p  { font-size: 15px; line-height: 1.6; }
+    section {
+        padding-left: var(--mobile-pad);
+        padding-right: var(--mobile-pad);
+    }
 
-    /* InfinityAccent - не вылезает */
+    #hero .max-w-6xl {
+        padding-left: var(--mobile-pad);
+        padding-right: var(--mobile-pad);
+    }
+
+    #hero h1 {
+        font-size: 40px;
+        line-height: 1.05;
+    }
+
+    #hero h2 {
+        font-size: 18px;
+    }
+
     #hero [aria-hidden="true"][role="img"] {
         max-width: 92vw !important;
         height: auto !important;
     }
 
-    /* ABOUT: убираем translate у заголовка (чтобы не уезжал вверх) */
     #about .-translate-y-16,
     #about .md\:-translate-y-20 {
         transform: none !important;
     }
 
-    /* SkillsCross: фикс 184px плиток -> компактнее на мобилке */
     #about .mt-8.flex.flex-col.items-center.gap-8 {
         gap: 14px !important;
     }
+
     #about .w-\[184px\] {
         width: 44vw !important;
         max-width: 180px !important;
     }
+
     #about .h-\[184px\] {
         height: 44vw !important;
         max-height: 180px !important;
     }
 
-    /* Заголовки секций */
     #projects h2,
     #catalog h2 {
         font-size: 32px !important;
         line-height: 1.05 !important;
     }
 
-    /* Карточки: чуть шире на мобилке */
-    .max-w-\[86vw\] { max-width: 94vw !important; }
+    .max-w-\[86vw\] {
+        max-width: 94vw !important;
+    }
 
-    /* Кнопки в карточках: перенос */
     #projects .mt-3.flex.gap-3,
     #catalog .mt-3.flex.gap-3 {
         flex-wrap: wrap !important;
         gap: 10px !important;
     }
 
-    /* CatalogCarousel: стрелки внутрь экрана */
-    #catalog button[aria-label="Назад"] { left: 8px !important; }
-    #catalog button[aria-label="Вперёд"] { right: 8px !important; }
+    #catalog button[aria-label="Назад"] {
+        left: 8px !important;
+    }
 
-    /* Модалка видео: не раздувать панель */
-    .max-w-6xl { max-width: 94vw !important; }
+    #catalog button[aria-label="Вперёд"] {
+        right: 8px !important;
+    }
 
-    /* Галерея: меньше внешние отступы */
+    .max-w-6xl {
+        max-width: 94vw !important;
+    }
+
     .fixed.inset-0.overflow-y-auto > div.flex.min-h-screen {
         padding-left: 12px !important;
         padding-right: 12px !important;
@@ -145,21 +150,25 @@ html, body {
         padding-bottom: 16px !important;
     }
 
-    /* Viewer image: устойчивый max-height на мобилке */
-    .max-h-\[80vh\] { max-height: 76svh !important; }
+    .max-h-\[80vh\] {
+        max-height: 76svh !important;
+    }
 }
 
-/* TABLET (641px - 1024px) */
 @media (min-width: 641px) and (max-width: 1024px) {
-    #hero h1 { font-size: 56px; }
-    #hero p  { font-size: 16px; }
+    #hero h1 {
+        font-size: 56px;
+    }
 
-    .max-w-\[86vw\] { max-width: 88vw !important; }
+    .max-w-\[86vw\] {
+        max-width: 88vw !important;
+    }
 
-    #catalog button[aria-label="Назад"] { left: -6px !important; }
-    #catalog button[aria-label="Вперёд"] { right: -6px !important; }
-}
+    #catalog button[aria-label="Назад"] {
+        left: -6px !important;
+    }
 
-/* DESKTOP (>= 1025px) — оставляем базовое поведение */
-@media (min-width: 1025px) {
+    #catalog button[aria-label="Вперёд"] {
+        right: -6px !important;
+    }
 }

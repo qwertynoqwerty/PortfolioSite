@@ -1,7 +1,3 @@
-﻿/**
- * Footer — финальный блок: Made by…, © 2025, иконки GitHub/Telegram.
- * Ссылки — target="_blank" rel="noopener noreferrer".
- */
 export default function Footer() {
     return (
         <footer id="contacts" className="mt-20 border-t border-white/10">
@@ -24,7 +20,6 @@ export default function Footer() {
                     >
                         GitHub
                     </a>
-
                 </div>
             </div>
         </footer>

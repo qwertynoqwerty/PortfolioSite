@@ -1,4 +1,4 @@
-﻿import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { SiUnity, SiDotnet, SiBlender, SiFigma, SiGit } from "react-icons/si";
 import { TILE } from "../utils/motionPresets";
 
@@ -12,6 +12,7 @@ function IconUltimateXR({ className = "w-12 h-12" }) {
         </svg>
     );
 }
+
 function IconMetaAllInOne({ className = "w-12 h-12" }) {
     return (
         <svg viewBox="0 0 24 24" className={className} aria-hidden>
@@ -41,9 +42,7 @@ function Tile({ icon, label }) {
         </div>
     );
 }
-/**
- * SkillsCross — блок навыков в виде «креста»/сетки с подсветкой при наведении.
- */
+
 export default function SkillsCross() {
     const iconSize = "w-12 h-12";
 
@@ -53,7 +52,7 @@ export default function SkillsCross() {
     ];
     const row2 = [
         { label: "UltimateXR", icon: <IconUltimateXR className={iconSize} /> },
-        { label: "Git", icon: <SiGit className={iconSize} /> }, // 🔄 теперь Git в центре
+        { label: "Git", icon: <SiGit className={iconSize} /> },
         { label: "Meta XR (All-in-One)", icon: <IconMetaAllInOne className={iconSize} /> },
     ];
     const row3 = [
@@ -64,25 +63,25 @@ export default function SkillsCross() {
     return (
         <div className="mt-8 flex flex-col items-center gap-8">
             <div className="flex gap-8">
-                {row1.map((s, i) => (
-                    <motion.div key={s.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}>
-                        <Tile {...s} />
+                {row1.map((skill, index) => (
+                    <motion.div key={skill.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}>
+                        <Tile {...skill} />
                     </motion.div>
                 ))}
             </div>
 
             <div className="flex gap-8">
-                {row2.map((s, i) => (
-                    <motion.div key={s.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i + 2}>
-                        <Tile {...s} />
+                {row2.map((skill, index) => (
+                    <motion.div key={skill.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index + 2}>
+                        <Tile {...skill} />
                     </motion.div>
                 ))}
             </div>
 
             <div className="flex gap-8">
-                {row3.map((s, i) => (
-                    <motion.div key={s.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i + 5}>
-                        <Tile {...s} />
+                {row3.map((skill, index) => (
+                    <motion.div key={skill.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index + 5}>
+                        <Tile {...skill} />
                     </motion.div>
                 ))}
             </div>

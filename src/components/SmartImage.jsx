@@ -1,23 +1,29 @@
-﻿// SmartImage — AVIF → WEBP → JPG/PNG, стабилизируем layout + приоритет
 const manifest = import.meta.glob(
     "/src/assets/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}",
-    { eager: true, as: "url" }
+    { eager: true, as: "url" },
 );
 
 function normalizeBase(input) {
     const raw = String(input).replace(/\\/g, "/").replace(/^\/+/, "");
     const noExt = raw.replace(/\.[a-z0-9]+$/i, "");
 
-    if (noExt.startsWith("src/assets/")) return `/${noExt}`;
-    if (noExt.startsWith("assets/")) return `/src/${noExt}`;
+    if (noExt.startsWith("src/assets/")) {
+        return `/${noExt}`;
+    }
+
+    if (noExt.startsWith("assets/")) {
+        return `/src/${noExt}`;
+    }
+
     return `/src/assets/${noExt}`;
 }
 
 function resolveVariants(src) {
-    if (!src) return { avif: null, webp: null, orig: null };
+    if (!src) {
+        return { avif: null, webp: null, orig: null };
+    }
 
     const base = normalizeBase(src);
-
     const avif = manifest[`${base}.avif`] || null;
     const webp = manifest[`${base}.webp`] || null;
 
@@ -27,10 +33,10 @@ function resolveVariants(src) {
     if (ext) {
         orig = manifest[`${base}${ext}`] || null;
     } else {
-        for (const e of [".jpg", ".jpeg", ".png"]) {
-            const k = `${base}${e}`;
-            if (manifest[k]) {
-                orig = manifest[k];
+        for (const candidateExt of [".jpg", ".jpeg", ".png"]) {
+            const key = `${base}${candidateExt}`;
+            if (manifest[key]) {
+                orig = manifest[key];
                 break;
             }
         }
@@ -40,14 +46,14 @@ function resolveVariants(src) {
 }
 
 export default function SmartImage({
-                                       src,
-                                       alt = "",
-                                       className = "",
-                                       width,
-                                       height,
-                                       priority = false,
-                                       ...rest
-                                   }) {
+    src,
+    alt = "",
+    className = "",
+    width,
+    height,
+    priority = false,
+    ...rest
+}) {
     const { avif, webp, orig } = resolveVariants(src);
     const imgSrc = orig || webp || avif || src;
 

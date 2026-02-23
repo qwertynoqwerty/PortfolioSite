@@ -1,6 +1,3 @@
-﻿/**
- * SectionDivider — декоративные линии под заголовком (legacy).
- */
 export default function SectionDivider() {
     return (
         <div className="relative h-24">

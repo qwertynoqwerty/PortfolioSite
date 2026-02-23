@@ -6,9 +6,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isProd ? "/PortfolioSite/" : "/",
-
     plugins: [react()],
-
     build: {
       target: "es2018",
       sourcemap: false,
@@ -16,7 +14,6 @@ export default defineConfig(({ mode }) => {
       cssCodeSplit: true,
       reportCompressedSize: true,
       chunkSizeWarningLimit: 800,
-
       rollupOptions: {
         output: {
           manualChunks: {
@@ -27,9 +24,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
     esbuild: {
-      // В проде убираем console.log / debugger
       drop: isProd ? ["console", "debugger"] : [],
     },
   };
