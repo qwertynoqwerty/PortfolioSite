@@ -29,17 +29,21 @@ const item = {
     visible: (i) => TILE(i).show,
 };
 
-function Tile({ icon, label }) {
+function Tile({ icon, label, href }) {
     return (
-        <div
+        <a
+            href={href}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label={`${label} website`}
             className="flex flex-col items-center justify-center
                  w-[clamp(92px,27vw,184px)] h-[clamp(92px,27vw,184px)] rounded-xl
                  border border-white/12 bg-white/[0.04] hover:bg-white/[0.07]
-                 text-white/90 transition"
+                 text-white/90 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
             <div className="mb-3">{icon}</div>
             <div className="text-[14px] font-medium text-center leading-tight">{label}</div>
-        </div>
+        </a>
     );
 }
 
@@ -47,17 +51,17 @@ export default function SkillsCross() {
     const iconSize = "w-12 h-12";
 
     const row1 = [
-        { label: "Unity", icon: <SiUnity className={iconSize} /> },
-        { label: "C#", icon: <SiDotnet className={iconSize} /> },
+        { label: "Unity", icon: <SiUnity className={iconSize} />, href: "https://unity.com/" },
+        { label: "C#", icon: <SiDotnet className={iconSize} />, href: "https://dotnet.microsoft.com/" },
     ];
     const row2 = [
-        { label: "UltimateXR", icon: <IconUltimateXR className={iconSize} /> },
-        { label: "Git", icon: <SiGit className={iconSize} /> },
-        { label: "Meta XR (All-in-One)", icon: <IconMetaAllInOne className={iconSize} /> },
+        { label: "UltimateXR", icon: <IconUltimateXR className={iconSize} />, href: "https://www.ultimatexr.io/" },
+        { label: "Git", icon: <SiGit className={iconSize} />, href: "https://git-scm.com/" },
+        { label: "Meta SDK", icon: <IconMetaAllInOne className={iconSize} />, href: "https://developers.meta.com/horizon/downloads/package/meta-xr-sdk-all-in-one-upm/" },
     ];
     const row3 = [
-        { label: "Blender", icon: <SiBlender className={iconSize} /> },
-        { label: "Figma", icon: <SiFigma className={iconSize} /> },
+        { label: "Blender", icon: <SiBlender className={iconSize} />, href: "https://www.blender.org/" },
+        { label: "Figma", icon: <SiFigma className={iconSize} />, href: "https://www.figma.com/" },
     ];
 
     return (
