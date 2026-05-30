@@ -1,6 +1,6 @@
 const manifest = import.meta.glob(
     "/src/assets/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}",
-    { eager: true, as: "url" },
+    { eager: true, query: "?url", import: "default" },
 );
 
 function normalizeBase(input) {

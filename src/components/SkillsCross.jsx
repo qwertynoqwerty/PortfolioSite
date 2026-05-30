@@ -33,7 +33,7 @@ function Tile({ icon, label }) {
     return (
         <div
             className="flex flex-col items-center justify-center
-                 w-[184px] h-[184px] rounded-xl
+                 w-[clamp(92px,27vw,184px)] h-[clamp(92px,27vw,184px)] rounded-xl
                  border border-white/12 bg-white/[0.04] hover:bg-white/[0.07]
                  text-white/90 transition"
         >
@@ -62,7 +62,7 @@ export default function SkillsCross() {
 
     return (
         <div className="mt-8 flex flex-col items-center gap-8">
-            <div className="flex gap-8">
+            <div className="flex gap-[clamp(8px,2vw,32px)]">
                 {row1.map((skill, index) => (
                     <motion.div key={skill.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}>
                         <Tile {...skill} />
@@ -70,7 +70,7 @@ export default function SkillsCross() {
                 ))}
             </div>
 
-            <div className="flex gap-8">
+            <div className="flex gap-[clamp(8px,2vw,32px)]">
                 {row2.map((skill, index) => (
                     <motion.div key={skill.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index + 2}>
                         <Tile {...skill} />
@@ -78,7 +78,7 @@ export default function SkillsCross() {
                 ))}
             </div>
 
-            <div className="flex gap-8">
+            <div className="flex gap-[clamp(8px,2vw,32px)]">
                 {row3.map((skill, index) => (
                     <motion.div key={skill.label} variants={item} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index + 5}>
                         <Tile {...skill} />

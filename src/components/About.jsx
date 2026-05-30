@@ -6,7 +6,7 @@ import { SECTION_IN, SLIDE_IN_LEFT, SLIDE_IN_RIGHT } from "../utils/motionPreset
 function CapsuleIllustration() {
     return (
         <div className="flex justify-center w-full">
-            <svg viewBox="0 0 520 520" className="w-[420px] md:w-[520px] h-auto" preserveAspectRatio="xMidYMid meet" aria-hidden>
+            <svg viewBox="0 0 520 520" className="h-auto w-full max-w-[520px]" preserveAspectRatio="xMidYMid meet" aria-hidden>
                 <defs>
                     <linearGradient id="capsule-g" x1="0" y1="0" x2="1" y2="1">
                         <stop offset="0%" stopColor="#7DD3FC" />
@@ -29,14 +29,14 @@ export default function About() {
     return (
         <motion.section
             id="about"
-            className="relative min-h-[92vh] flex flex-col justify-center py-20"
+            className="relative min-h-[92vh] overflow-x-clip flex flex-col justify-center py-16 md:py-20"
             initial={SECTION_IN.hidden}
             whileInView={SECTION_IN.show}
             viewport={{ once: true, amount: 0.3 }}
         >
-            <SectionTitle title="Обо мне" className="mx-auto max-w-[100rem] px-6 mb-14 -translate-y-16 md:-translate-y-20 text-center" />
+            <SectionTitle title="Обо мне" className="mx-auto max-w-[100rem] px-4 md:px-6 mb-10 md:mb-14 text-center" />
 
-            <div className="mx-auto max-w-[100rem] px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-40 xl:gap-56 items-center">
+            <div className="mx-auto w-full max-w-[100rem] px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 xl:gap-32 items-center">
                 <motion.div
                     initial={SLIDE_IN_LEFT.hidden}
                     whileInView={SLIDE_IN_LEFT.show}
@@ -45,7 +45,7 @@ export default function About() {
                 >
                     <CapsuleIllustration />
 
-                    <div className="mt-8 max-w-[640px] text-[18px] leading-relaxed text-white/85">
+                    <div className="mt-6 md:mt-8 max-w-[640px] text-base md:text-[18px] leading-relaxed text-white/85">
                         <p>
                             Работаю с VR/AR на Unity: реализую пользовательские взаимодействия, интерфейсы и системную
                             логику для VR/MR-приложений.

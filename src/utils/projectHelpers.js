@@ -16,6 +16,11 @@ export function extractYoutubeId(value) {
         return "";
     }
 
-    const match = String(value).match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);
-    return match?.[1] ?? String(value);
+    const input = String(value).trim();
+    if (/^[A-Za-z0-9_-]{6,}$/.test(input)) {
+        return input;
+    }
+
+    const match = input.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);
+    return match?.[1] ?? "";
 }

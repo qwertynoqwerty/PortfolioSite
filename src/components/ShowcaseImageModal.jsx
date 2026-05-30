@@ -3,6 +3,8 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import useLockBodyScroll from "../utils/useLockBodyScroll";
 import SmartImage from "./SmartImage";
 
+const ROW_PATTERN = [2, 3];
+
 export default function ShowcaseImageModal({ open, title, images = [], onClose, initialFocusRef }) {
     useLockBodyScroll(open);
 
@@ -46,18 +48,16 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
     const atFirst = viewerIndex <= 0;
     const atLast = list.length > 0 ? viewerIndex >= list.length - 1 : true;
 
-    const navBtnBase = "px-3 py-1.5 rounded-lg border text-sm";
+    const navBtnBase = "inline-flex min-h-12 min-w-12 items-center justify-center px-3 py-2 rounded-lg border text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
     const navBtnEnabled = "border-white/20 hover:bg-white/10";
     const navBtnDisabled = "border-white/10 opacity-50 cursor-not-allowed";
-    const rowPattern = [2, 3];
-
     const rows = useMemo(() => {
         const result = [];
         let offset = 0;
         let patternIndex = 0;
 
         while (offset < list.length) {
-            const desired = rowPattern[patternIndex % rowPattern.length];
+            const desired = ROW_PATTERN[patternIndex % ROW_PATTERN.length];
             const remaining = list.length - offset;
             const size = Math.min(desired, remaining);
 
@@ -96,7 +96,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex min-h-screen items-center justify-center px-6 py-10">
+                        <div className="flex min-h-[100dvh] items-center justify-center px-3 py-4 md:px-6 md:py-10">
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-200"
@@ -115,7 +115,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                             ref={closeGalleryRef}
                                             type="button"
                                             onClick={onClose}
-                                            className="px-3 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 text-sm focus:outline-none focus-visible:outline-none"
+                                            className="inline-flex min-h-12 items-center px-3 py-2 rounded-lg border border-white/20 hover:bg-white/10 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                         >
                                             Закрыть
                                         </button>
@@ -139,7 +139,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                                             key={`${src}-${imageIndex}`}
                                                             type="button"
                                                             onClick={() => openViewer(imageIndex)}
-                                                            className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01] focus:outline-none focus-visible:outline-none"
+                                                            className="aspect-[16/9] rounded-xl border border-white/10 overflow-hidden bg-black text-left cursor-zoom-in transition-transform duration-200 hover:scale-[1.01] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                                         >
                                                             <SmartImage
                                                                 src={src}
@@ -187,7 +187,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                     type="button"
                                     onClick={goPrev}
                                     disabled={atFirst}
-                                    className={`${navBtnBase} ${atFirst ? navBtnDisabled : navBtnEnabled} focus:outline-none focus-visible:outline-none`}
+                                    className={`${navBtnBase} ${atFirst ? navBtnDisabled : navBtnEnabled}`}
                                 >
                                     ‹
                                 </button>
@@ -196,7 +196,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                     type="button"
                                     onClick={goNext}
                                     disabled={atLast}
-                                    className={`${navBtnBase} ${atLast ? navBtnDisabled : navBtnEnabled} focus:outline-none focus-visible:outline-none`}
+                                    className={`${navBtnBase} ${atLast ? navBtnDisabled : navBtnEnabled}`}
                                 >
                                     ›
                                 </button>
@@ -205,7 +205,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                     ref={closeViewerRef}
                                     type="button"
                                     onClick={closeViewer}
-                                    className={`${navBtnBase} ${navBtnEnabled} focus:outline-none focus-visible:outline-none`}
+                                    className={`${navBtnBase} ${navBtnEnabled}`}
                                 >
                                     Закрыть
                                 </button>

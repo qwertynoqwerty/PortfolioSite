@@ -4,7 +4,7 @@ export default function ProjectActions({
     onOpenVideo,
     onOpenRepo,
     className = "flex gap-3",
-    buttonClassName = "px-3 py-1.5 rounded-lg border text-sm",
+    buttonClassName = "min-h-11 px-3 py-2 rounded-lg border text-sm",
 }) {
     const hasImages = (project?.images?.length || 0) > 0;
     const hasVideo = Boolean(project?.youtubeId);

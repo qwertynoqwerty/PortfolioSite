@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import projects from "../data/projects.json";
 import ProjectCard from "./ProjectCard";
@@ -8,134 +8,114 @@ import SectionTitle from "./SectionTitle";
 import useProjectMediaModals from "../utils/useProjectMediaModals";
 import { HEADER_IN, SECTION_IN } from "../utils/motionPresets";
 
+const VISIBLE_COUNT = 3;
+
 const pop = (delay) => ({
     initial: { opacity: 0, y: 18 },
     inView: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut", delay } },
 });
+const navButtonClass =
+    "relative z-30 flex h-12 w-12 items-center justify-center justify-self-center rounded-full border text-lg leading-none backdrop-blur transition-[transform,opacity,background-color,border-color,color,box-shadow,filter] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
 export default function CatalogCarousel() {
     const items = useMemo(() => projects.filter((project) => !project.featured), []);
     const { openImages, openVideo, openRepo, imageModalProps, videoModalProps } = useProjectMediaModals();
 
-    const railRef = useRef(null);
+    const viewportRef = useRef(null);
     const trackRef = useRef(null);
-    const stepRef = useRef(600);
-    const rafRef = useRef(0);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [slideWidth, setSlideWidth] = useState(0);
+    const [trackGap, setTrackGap] = useState(24);
 
-    const [atStart, setAtStart] = useState(true);
-    const [atEnd, setAtEnd] = useState(false);
-
-    const stopAnim = () => {
-        if (rafRef.current) {
-            cancelAnimationFrame(rafRef.current);
-            rafRef.current = 0;
-        }
+    const maxIndex = Math.max(0, items.length - VISIBLE_COUNT);
+    const translateX = Math.round(activeIndex * (slideWidth + trackGap));
+    const isPrevDisabled = activeIndex === 0;
+    const isNextDisabled = activeIndex >= maxIndex;
+    const activeButtonStyle = {
+        borderColor: "rgba(255,255,255,0.2)",
+        backgroundColor: "rgba(17,17,20,0.92)",
+        color: "rgb(255,255,255)",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+        opacity: 1,
+        filter: "none",
+    };
+    const disabledButtonStyle = {
+        borderColor: "rgba(255,255,255,0.1)",
+        backgroundColor: "rgba(17,17,20,0.92)",
+        color: "rgba(255,255,255,0.55)",
+        boxShadow: "none",
+        opacity: 1,
+        filter: "none",
     };
 
-    const animateScrollTo = (element, targetLeft) => {
-        if (!element) {
-            return;
-        }
-
-        stopAnim();
-
-        const startLeft = element.scrollLeft;
-        const maxLeft = Math.max(0, element.scrollWidth - element.clientWidth);
-        const clampedTarget = Math.max(0, Math.min(targetLeft, maxLeft));
-        const delta = clampedTarget - startLeft;
-
-        if (Math.abs(delta) < 0.5) {
-            return;
-        }
-
-        const durationMs = 520;
-        const startTime = performance.now();
-
-        const easeInOutCubic = (t) => {
-            if (t < 0.5) {
-                return 4 * t * t * t;
-            }
-
-            return 1 - Math.pow(-2 * t + 2, 3) / 2;
-        };
-
-        const tick = (now) => {
-            const t = Math.min(1, (now - startTime) / durationMs);
-            element.scrollLeft = startLeft + delta * easeInOutCubic(t);
-
-            if (t < 1) {
-                rafRef.current = requestAnimationFrame(tick);
-            } else {
-                rafRef.current = 0;
-            }
-        };
-
-        rafRef.current = requestAnimationFrame(tick);
-    };
-
-    useEffect(() => {
-        const rail = railRef.current;
+    const updateLayout = () => {
+        const viewport = viewportRef.current;
         const track = trackRef.current;
 
-        if (!rail || !track) {
+        if (!viewport || !track) {
+            return;
+        }
+
+        const viewportWidth = viewport.clientWidth;
+        const computedStyle = getComputedStyle(track);
+        const gap = Math.round(parseFloat(computedStyle.columnGap || computedStyle.gap || "0") || 0);
+        const nextSlideWidth =
+            viewportWidth > 0 ? Math.max(0, Math.floor((viewportWidth - gap * 2) / VISIBLE_COUNT)) : 0;
+
+        setTrackGap(gap);
+        setSlideWidth(nextSlideWidth);
+    };
+
+    useLayoutEffect(() => {
+        updateLayout();
+    }, [items.length]);
+
+    useEffect(() => {
+        const viewport = viewportRef.current;
+
+        if (!viewport) {
             return undefined;
         }
 
-        const updateEdges = () => {
-            const max = rail.scrollWidth - rail.clientWidth - 1;
-            setAtStart(rail.scrollLeft <= 0);
-            setAtEnd(rail.scrollLeft >= max);
-        };
-
-        const calcStep = () => {
-            const firstCell = track.querySelector("[data-card-cell='1']");
-            if (!firstCell) {
-                return;
-            }
-
-            const cellRect = firstCell.getBoundingClientRect();
-            const trackStyle = getComputedStyle(track);
-            const gap =
-                parseFloat(trackStyle.columnGap || "0") ||
-                parseFloat(trackStyle.gap || "0") ||
-                0;
-
-            stepRef.current = Math.max(120, Math.round(cellRect.width + gap));
-            updateEdges();
-        };
-
         const resizeObserver = new ResizeObserver(() => {
-            requestAnimationFrame(() => {
-                calcStep();
-                updateEdges();
-            });
+            window.requestAnimationFrame(updateLayout);
         });
 
-        resizeObserver.observe(rail);
-        resizeObserver.observe(track);
-        rail.addEventListener("scroll", updateEdges, { passive: true });
-
-        requestAnimationFrame(() => {
-            rail.scrollLeft = 0;
-            calcStep();
-            updateEdges();
-        });
+        resizeObserver.observe(viewport);
 
         return () => {
-            stopAnim();
             resizeObserver.disconnect();
-            rail.removeEventListener("scroll", updateEdges);
         };
-    }, [items.length]);
+    }, []);
 
-    const scrollByStep = (dir) => {
-        const rail = railRef.current;
-        if (!rail) {
-            return;
+    useEffect(() => {
+        if (activeIndex > maxIndex) {
+            setActiveIndex(maxIndex);
         }
+    }, [activeIndex, maxIndex]);
 
-        animateScrollTo(rail, rail.scrollLeft + dir * (stepRef.current || 600));
+    useEffect(() => {
+        const onKeyDown = (event) => {
+            if (event.key === "ArrowLeft") {
+                moveTo(activeIndex - 1);
+            }
+
+            if (event.key === "ArrowRight") {
+                moveTo(activeIndex + 1);
+            }
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [activeIndex, maxIndex]);
+
+    const moveTo = (nextIndex) => {
+        const clampedIndex = Math.max(0, Math.min(maxIndex, nextIndex));
+        setActiveIndex(clampedIndex);
     };
+
+    const goPrev = () => moveTo(activeIndex - 1);
+    const goNext = () => moveTo(activeIndex + 1);
 
     if (items.length === 0) {
         return null;
@@ -158,19 +138,20 @@ export default function CatalogCarousel() {
                 <SectionTitle title="Каталог" />
             </motion.div>
 
-            <div className="relative overflow-visible">
+            <div className="grid grid-cols-[48px_minmax(0,1fr)_48px] md:grid-cols-[56px_minmax(0,1fr)_56px] items-center gap-3 md:gap-4 overflow-visible">
                 <motion.button
                     type="button"
                     aria-label="Назад"
                     title="Назад"
-                    onClick={() => scrollByStep(-1)}
-                    disabled={atStart}
+                    onClick={goPrev}
+                    disabled={isPrevDisabled}
+                    aria-disabled={isPrevDisabled}
+                    data-state={isPrevDisabled ? "disabled" : "active"}
                     initial={pop(0).initial}
                     whileInView={pop(0).inView}
                     viewport={{ once: true, amount: 0.25 }}
-                    className={`absolute z-40 -left-8 md:-left-10 top-1/2 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 px-3 py-3 backdrop-blur text-lg leading-none shadow-lg transition-opacity ${
-                        atStart ? "opacity-40 cursor-not-allowed pointer-events-none" : "hover:bg-white/20"
-                    }`}
+                    className={navButtonClass}
+                    style={isPrevDisabled ? disabledButtonStyle : activeButtonStyle}
                 >
                     ‹
                 </motion.button>
@@ -181,22 +162,25 @@ export default function CatalogCarousel() {
                     viewport={{ once: true, amount: 0.2 }}
                 >
                     <div
-                        ref={railRef}
-                        className="relative z-20 overflow-x-hidden overflow-y-hidden py-2 hide-scrollbar"
-                        style={{
-                            WebkitOverflowScrolling: "touch",
-                            overscrollBehaviorX: "contain",
-                            overscrollBehaviorY: "auto",
-                            touchAction: "pan-y",
-                        }}
+                        ref={viewportRef}
+                        className="relative z-20 overflow-hidden rounded-[28px] px-0 py-2"
                         aria-label="Лента проектов каталога"
-                        onWheelCapture={(event) => {
-                            event.stopPropagation();
-                        }}
                     >
-                        <div ref={trackRef} className="flex items-stretch gap-5 md:gap-6 lg:gap-8">
-                            {items.map((project, index) => (
-                                <div key={project.id} data-card-cell={index === 0 ? "1" : "0"} className="shrink-0">
+                        <motion.div
+                            ref={trackRef}
+                            className="flex items-start gap-4 md:gap-6 lg:gap-8"
+                            animate={{ x: -translateX }}
+                            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                            {items.map((project) => (
+                                <div
+                                    key={project.id}
+                                    className="shrink-0 min-w-0"
+                                    style={{
+                                        width: slideWidth ? `${slideWidth}px` : "calc((100% - 48px) / 3)",
+                                        flexBasis: slideWidth ? `${slideWidth}px` : "calc((100% - 48px) / 3)",
+                                    }}
+                                >
                                     <ProjectCard
                                         project={project}
                                         compact
@@ -206,7 +190,7 @@ export default function CatalogCarousel() {
                                     />
                                 </div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
                 </motion.div>
 
@@ -214,14 +198,15 @@ export default function CatalogCarousel() {
                     type="button"
                     aria-label="Вперёд"
                     title="Вперёд"
-                    onClick={() => scrollByStep(1)}
-                    disabled={atEnd}
+                    onClick={goNext}
+                    disabled={isNextDisabled}
+                    aria-disabled={isNextDisabled}
+                    data-state={isNextDisabled ? "disabled" : "active"}
                     initial={pop(0.24).initial}
                     whileInView={pop(0.24).inView}
                     viewport={{ once: true, amount: 0.25 }}
-                    className={`absolute z-40 -right-8 md:-right-10 top-1/2 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 px-3 py-3 backdrop-blur text-lg leading-none shadow-lg transition-opacity ${
-                        atEnd ? "opacity-40 cursor-not-allowed" : "hover:bg-white/20"
-                    }`}
+                    className={navButtonClass}
+                    style={isNextDisabled ? disabledButtonStyle : activeButtonStyle}
                 >
                     ›
                 </motion.button>

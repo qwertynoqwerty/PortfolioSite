@@ -17,7 +17,6 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            react: ["react", "react-dom"],
             motion: ["framer-motion"],
             headlessui: ["@headlessui/react"],
           },

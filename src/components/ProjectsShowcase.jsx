@@ -17,7 +17,7 @@ export default function ProjectsShowcase() {
     return (
         <motion.section
             id="projects"
-            className="mx-auto max-w-[100rem] px-4 md:px-8 pt-16 pb-28"
+            className="mx-auto max-w-[100rem] overflow-x-clip px-4 md:px-8 pt-16 pb-28"
             initial={SECTION_IN.hidden}
             whileInView={SECTION_IN.show}
             viewport={{ once: true, amount: 0.22 }}
@@ -40,7 +40,7 @@ export default function ProjectsShowcase() {
                     return (
                         <motion.div
                             key={project.id}
-                            className="grid items-start md:grid-cols-2 gap-14 md:gap-28 lg:gap-44 xl:gap-56"
+                            className="grid items-start md:grid-cols-2 gap-10 md:gap-16 lg:gap-24 xl:gap-32"
                             initial={PROJECT_IN.hidden}
                             whileInView={PROJECT_IN.show}
                             viewport={{ once: true, amount: 0.35 }}
@@ -72,7 +72,7 @@ export default function ProjectsShowcase() {
                                     onOpenImages={openImages}
                                     onOpenVideo={openVideo}
                                     onOpenRepo={openRepo}
-                                    className="flex justify-center gap-3 px-4 py-3"
+                                    className="flex flex-wrap justify-center gap-2 px-3 py-3"
                                 />
                             </motion.div>
 

@@ -22,6 +22,7 @@ export default function OrbitalOrbsBackground({
         let dpr = Math.min(window.devicePixelRatio || 1, dprCap);
         let width = 0;
         let height = 0;
+        let resizeFrame = 0;
 
         const mem = navigator.deviceMemory || 4;
         const cores = navigator.hardwareConcurrency || 4;
@@ -139,6 +140,18 @@ export default function OrbitalOrbsBackground({
             ctx.globalAlpha = 1;
         };
 
+        const scheduleDraw = () => {
+            if (resizeFrame) {
+                cancelAnimationFrame(resizeFrame);
+            }
+
+            resizeFrame = requestAnimationFrame(() => {
+                resizeFrame = 0;
+                resize();
+                drawStatic();
+            });
+        };
+
         resize();
         drawStatic();
 
@@ -148,22 +161,17 @@ export default function OrbitalOrbsBackground({
             canvas.style.opacity = "1";
         });
 
-        const resizeObserver = new ResizeObserver(() => {
-            resize();
-            drawStatic();
-        });
+        const resizeObserver = new ResizeObserver(scheduleDraw);
         resizeObserver.observe(canvas.parentElement || canvas);
 
-        const onResize = () => {
-            resize();
-            drawStatic();
-        };
-
-        window.addEventListener("resize", onResize, { passive: true });
+        window.addEventListener("resize", scheduleDraw, { passive: true });
 
         return () => {
+            if (resizeFrame) {
+                cancelAnimationFrame(resizeFrame);
+            }
             resizeObserver.disconnect();
-            window.removeEventListener("resize", onResize);
+            window.removeEventListener("resize", scheduleDraw);
         };
     }, [countScale, hueShift, brightness]);
 

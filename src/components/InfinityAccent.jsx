@@ -50,14 +50,14 @@ export default function InfinityAccent({
             aria-hidden="true"
             role="img"
             style={{
-                width,
-                height,
+                width: `min(${width}px, 78vw)`,
+                aspectRatio: `${width} / ${height}`,
                 transform: "rotateX(18deg) scaleX(1.2)",
                 transformOrigin: "center",
                 filter: reduce ? "none" : "blur(2px)",
             }}
         >
-            <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+            <svg viewBox={`0 0 ${width} ${height}`} className="block h-full w-full">
                 <defs>
                     <linearGradient id="inf-metal" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stopColor="rgba(229,229,229,0.03)" />
