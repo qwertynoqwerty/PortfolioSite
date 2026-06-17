@@ -15,29 +15,47 @@
       "/src/assets/images/museum/museum-6.webp",
       "/src/assets/images/museum/museum-7.webp"
     ],
-    "youtubeId": "g4c3En5C5_A",
+    "youtubeId": "Cbh4kK2AVzc",
     "repo": "",
     "featured": true
   },
   {
+    "id": "virtualcollege-vr",
+    "title": "VirtualCollege",
+    "year": 2026,
+    "date": "2026-06",
+    "summary": "VR-приложение на Unity, созданное как дипломный проект для виртуального знакомства с колледжем и отработки практических навыков в иммерсивной среде. После авторизации пользователь выбирает специальность, проходит обучение под руководством NPC-куратора и выполняет профильные VR-квесты — от сборки и диагностики ПК до поварского и кондитерского дела и материально-технического обеспечения. В проекте реализованы захват и использование объектов, визуальная подсветка активных зон и целей, диалоговая система с отслеживанием состояний квестов и загрузка достижений. Технологическую основу составляют Meta XR SDK, OpenXR и URP, а синхронизация профиля, прогресса и обучения выполняется через внешний backend API; приложение рассчитано на Meta Quest 3.",
+    "cover": "/src/assets/images/college/college-cover.webp",
+    "images": [
+      "/src/assets/images/college/college-1.webp",
+      "/src/assets/images/college/college-2.webp",
+      "/src/assets/images/college/college-3.webp",
+      "/src/assets/images/college/college-4.webp",
+      "/src/assets/images/college/college-5.webp",
+      "/src/assets/images/college/college-6.webp",
+      "/src/assets/images/college/college-7.webp"
+    ],
+    "youtubeId": "aH5OWpayVv8",
+    "repo": "https://github.com/qwertynoqwerty/VirtualCollegeVR",
+    "featured": true
+  },
+  {
     "id": "car-ar",
-    "title": "Car",
+    "title": "Murata AR Vision",
     "year": 2025,
     "date": "2025-09",
-    "summary": "AR-приложение для просмотра 3D-модели автомобиля, в разработке которого я участвовал. Использованы AR Foundation для распознавания маркера и размещения модели, LeanTouch для жестов вращения и масштабирования, Cinemachine для управления виртуальными камерами, встроенный WebView для отображения дополнительного контента, а также DOTween для анимаций интерфейса и плавных переходов. Реализованы удобный AR-просмотр, адаптивный UI и оптимизированная логика взаимодействия с моделью.",
-    "cover": "/src/assets/images/car/car-cover.webp",
+    "summary": "AR-приложение на Unity для просмотра 3D-модели автомобиля. Реализованы распознавание маркера, жесты вращения и масштабирования и адаптивный AR-просмотр на AR Foundation, LeanTouch и Cinemachine.",
+    "cover": "/src/assets/images/murata/murata-cover.webp",
     "images": [
-      "/src/assets/images/car/car-1.webp",
-      "/src/assets/images/car/car-2.webp",
-      "/src/assets/images/car/car-3.webp",
-      "/src/assets/images/car/car-4.webp",
-      "/src/assets/images/car/car-5.webp",
-      "/src/assets/images/car/car-6.webp",
-      "/src/assets/images/car/car-7.webp"
+      "/src/assets/images/murata/murata-1.webp",
+      "/src/assets/images/murata/murata-2.webp",
+      "/src/assets/images/murata/murata-3.webp",
+      "/src/assets/images/murata/murata-4.webp",
+      "/src/assets/images/murata/murata-5.webp"
     ],
     "youtubeId": "SqFC846dmqM",
     "repo": "",
-    "featured": true
+    "featured": false
   },
   {
     "id": "daggerhit-2d",
