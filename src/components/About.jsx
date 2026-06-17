@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import SkillsCross from "./SkillsCross";
 import SectionTitle from "./SectionTitle";
+import StatCounter from "./StatCounter";
+import projects from "../data/projects.json";
 import { SECTION_IN, SLIDE_IN_LEFT, SLIDE_IN_RIGHT } from "../utils/motionPresets";
 
 function CapsuleIllustration() {
@@ -9,9 +11,9 @@ function CapsuleIllustration() {
             <svg viewBox="0 0 520 520" className="h-auto w-full max-w-[520px]" preserveAspectRatio="xMidYMid meet" aria-hidden>
                 <defs>
                     <linearGradient id="capsule-g" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#7DD3FC" />
-                        <stop offset="50%" stopColor="#C084FC" />
-                        <stop offset="100%" stopColor="#F472B6" />
+                        <stop offset="0%" stopColor="#FFFFFF" />
+                        <stop offset="50%" stopColor="#B5B5B5" />
+                        <stop offset="100%" stopColor="#7A7A7E" />
                     </linearGradient>
                 </defs>
                 <g fill="none" stroke="url(#capsule-g)" strokeWidth="3" opacity="0.9">
@@ -55,6 +57,12 @@ export default function About() {
                             Пространственная логика сцены, интерактивные элементы и пользовательские состояния, а также
                             настройка UI и взаимодействий под реальные устройства.
                         </p>
+                    </div>
+
+                    <div className="mt-8 grid w-full max-w-[640px] grid-cols-3 gap-3 md:gap-4">
+                        <StatCounter value={projects.length} label="Проектов" suffix="+" />
+                        <StatCounter value={1} label="Год в Unity" />
+                        <StatCounter value={3} label="XR-проекта" />
                     </div>
                 </motion.div>
 

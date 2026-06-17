@@ -106,8 +106,8 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-[min(92rem,92vw)] rounded-2xl border border-white/10 bg-[#121214] p-6 md:p-7 shadow-xl">
-                                    <div className="flex items-center justify-between">
+                                <Dialog.Panel className="flex max-h-[90dvh] w-[min(92rem,92vw)] flex-col rounded-2xl border border-white/10 bg-[#121214] p-6 md:p-7 shadow-xl">
+                                    <div className="flex shrink-0 items-center justify-between">
                                         <Dialog.Title className="text-lg md:text-xl font-semibold">
                                             {title}
                                         </Dialog.Title>
@@ -121,11 +121,11 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                         </button>
                                     </div>
 
-                                    <div className="mt-2 text-xs md:text-sm text-white/60">
+                                    <div className="mt-2 shrink-0 text-xs md:text-sm text-white/60">
                                         Нажмите на изображение, чтобы открыть в полном размере
                                     </div>
 
-                                    <div className="mt-5 grid gap-4">
+                                    <div className="mt-5 grid gap-4 overflow-y-auto overscroll-contain pr-1">
                                         {rows.map((row, rowIndex) => (
                                             <div
                                                 key={`row-${rowIndex}-${row.startIndex}`}

@@ -1,6 +1,7 @@
 [
   {
     "id": "museumroom-mr",
+    "tags": ["Unity", "Meta XR", "Spatial Anchors", "MR", "URP"],
     "title": "MuseumRoom",
     "year": 2026,
     "date": "2025-12",
@@ -21,6 +22,7 @@
   },
   {
     "id": "virtualcollege-vr",
+    "tags": ["Unity", "Meta XR SDK", "OpenXR", "VR", "URP"],
     "title": "VirtualCollege",
     "year": 2026,
     "date": "2026-06",
@@ -41,6 +43,7 @@
   },
   {
     "id": "car-ar",
+    "tags": ["Unity", "AR Foundation", "LeanTouch", "Cinemachine", "AR"],
     "title": "Murata AR Vision",
     "year": 2025,
     "date": "2025-09",
@@ -59,6 +62,7 @@
   },
   {
     "id": "daggerhit-2d",
+    "tags": ["Unity", "2D", "C#"],
     "title": "DaggerHit",
     "year": 2023,
     "date": "2023-11",
@@ -77,6 +81,7 @@
   },
   {
     "id": "ridervsghost-3d",
+    "tags": ["Unity", "3D", "C#"],
     "title": "RiderVsGhost",
     "year": 2025,
     "date": "2025-08",
@@ -95,6 +100,7 @@
   },
   {
     "id": "unityrace-2d",
+    "tags": ["Unity", "2D", "C#"],
     "title": "UnityRace",
     "year": 2023,
     "date": "2024-02",
@@ -113,6 +119,7 @@
   },
   {
     "id": "plantsvsundead-3d",
+    "tags": ["Unity", "3D", "Tower Defense"],
     "title": "PlantsVsUndead",
     "year": 2024,
     "date": "2024-02",
@@ -131,6 +138,7 @@
   },
   {
     "id": "designroom-3d",
+    "tags": ["Unity", "3D", "C#"],
     "title": "DesignRoom",
     "year": 2024,
     "date": "2024-02",

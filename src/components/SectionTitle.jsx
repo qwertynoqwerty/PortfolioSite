@@ -1,6 +1,16 @@
-export default function SectionTitle({ title, className = "text-center", titleClassName = "text-[40px] md:text-[48px] font-bold leading-none" }) {
+export default function SectionTitle({
+    title,
+    eyebrow,
+    className = "text-center",
+    titleClassName = "text-[40px] md:text-[48px] font-bold leading-none",
+}) {
     return (
         <div className={className}>
+            {eyebrow && (
+                <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.4em] text-white/40">
+                    {eyebrow}
+                </div>
+            )}
             <h2 className={titleClassName}>{title}</h2>
             <div className="mt-3 flex flex-col items-center gap-2">
                 <div className="h-[3px] w-40 bg-white/30 rounded-full" />

@@ -175,10 +175,63 @@ export default function OrbitalOrbsBackground({
         };
     }, [countScale, hueShift, brightness]);
 
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) {
+            return undefined;
+        }
+
+        const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
+        const lowPower = (navigator.deviceMemory || 4) <= 4 || (navigator.hardwareConcurrency || 4) <= 4;
+        if (prefersReduced || lowPower) {
+            return undefined;
+        }
+
+        let frame = 0;
+        let start = 0;
+        const pointer = { x: 0, y: 0 };
+        const current = { x: 0, y: 0 };
+
+        const onPointer = (event) => {
+            pointer.x = (event.clientX / window.innerWidth - 0.5) * 2;
+            pointer.y = (event.clientY / window.innerHeight - 0.5) * 2;
+        };
+
+        const tick = (time) => {
+            if (!start) {
+                start = time;
+            }
+
+            const elapsed = (time - start) / 1000;
+            const driftX = Math.sin(elapsed * 0.08) * 10;
+            const driftY = Math.cos(elapsed * 0.06) * 8;
+            const scrollY = window.scrollY || 0;
+
+            const targetX = pointer.x * 14 + driftX;
+            const targetY = pointer.y * 14 + driftY - scrollY * 0.03;
+
+            current.x += (targetX - current.x) * 0.05;
+            current.y += (targetY - current.y) * 0.05;
+
+            canvas.style.transform = `translate3d(${current.x.toFixed(2)}px, ${current.y.toFixed(2)}px, 0)`;
+            frame = requestAnimationFrame(tick);
+        };
+
+        window.addEventListener("pointermove", onPointer, { passive: true });
+        frame = requestAnimationFrame(tick);
+
+        return () => {
+            cancelAnimationFrame(frame);
+            window.removeEventListener("pointermove", onPointer);
+            canvas.style.transform = "";
+        };
+    }, []);
+
     return (
         <canvas
             ref={canvasRef}
-            className="fixed inset-0 w-full h-full pointer-events-none"
+            className="fixed inset-0 w-full h-full pointer-events-none will-change-transform"
+            style={{ scale: "1.06" }}
             aria-hidden="true"
         />
     );

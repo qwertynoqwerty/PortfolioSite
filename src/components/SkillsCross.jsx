@@ -31,19 +31,22 @@ const item = {
 
 function Tile({ icon, label, href }) {
     return (
-        <a
+        <motion.a
             href={href}
             target="_blank"
             rel="noreferrer noopener"
             aria-label={`${label} website`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 320, damping: 20 }}
             className="flex flex-col items-center justify-center
                  w-[clamp(92px,27vw,184px)] h-[clamp(92px,27vw,184px)] rounded-xl
-                 border border-white/12 bg-white/[0.04] hover:bg-white/[0.07]
-                 text-white/90 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                 border border-white/12 bg-white/[0.04] hover:bg-white/[0.07] hover:border-white/25
+                 text-white/90 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
             <div className="mb-3">{icon}</div>
             <div className="text-[14px] font-medium text-center leading-tight">{label}</div>
-        </a>
+        </motion.a>
     );
 }
 
