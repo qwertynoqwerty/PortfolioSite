@@ -16,7 +16,7 @@ export default function ProjectCard({
     const summaryTextClass = compact ? "text-xs md:text-[13px]" : "text-sm md:text-[15px]";
 
     return (
-        <div className={`${cardWidthClass} group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.03] p-1 shadow-[0_18px_48px_rgba(0,0,0,0.18)] transition-colors duration-300 hover:border-white/25`}>
+        <div className={`${cardWidthClass} group flex h-full flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.03] p-1 shadow-[0_18px_48px_rgba(0,0,0,0.18)] transition-colors duration-300 hover:border-white/25`}>
             <div className="overflow-hidden rounded-xl">
                 <div className={`w-full ${aspectClass}`}>
                     {project.cover ? (
@@ -33,7 +33,7 @@ export default function ProjectCard({
                 </div>
             </div>
 
-            <div className="px-4 sm:px-5 pt-4 pb-5 min-w-0 flex h-full flex-col">
+            <div className="px-4 sm:px-5 pt-4 pb-5 min-w-0 flex flex-1 flex-col">
                 <div className="flex items-baseline justify-between gap-6">
                     <h3 className={`font-semibold ${titleClass}`}>{project.title}</h3>
                     <span className="font-mono text-[11px] text-white/55">{formatMonthYear(project.date, project.year)}</span>
@@ -52,8 +52,7 @@ export default function ProjectCard({
                     onOpenImages={onOpenImages}
                     onOpenVideo={onOpenVideo}
                     onOpenRepo={onOpenRepo}
-                    className="mt-auto pt-3 flex flex-wrap gap-2"
-                    buttonClassName="inline-flex min-h-10 items-center justify-center rounded-lg border px-3 py-2 text-[11px] md:text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    className="mt-auto flex flex-wrap justify-center gap-2 px-3 py-3"
                 />
             </div>
         </div>
