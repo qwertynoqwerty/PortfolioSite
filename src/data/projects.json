@@ -92,7 +92,7 @@
     "title": "Murata AR Vision",
     "year": 2025,
     "date": "2025-10",
-    "summary": "AR-приложение на Unity для демонстрации 3D-модели автомобиля через маркер. Реализованы распознавание изображения, адаптивный AR-просмотр, жесты поворота и масштаба, AR Foundation, LeanTouch и Cinemachine.",
+    "summary": "AR-приложение на Unity для демонстрации 3D-модели автомобиля через маркер. Реализованы распознавание изображения, жесты поворота и масштаба, AR Foundation, LeanTouch и Cinemachine.",
     "cover": "/src/assets/images/murata/murata-cover.webp",
     "images": [
       "/src/assets/images/murata/murata-1.webp",
