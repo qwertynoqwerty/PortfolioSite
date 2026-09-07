@@ -1,11 +1,45 @@
 [
   {
+    "id": "robobeam-simulator",
+    "tags": [
+      "Unity",
+      "C#",
+      "URP",
+      "Preliy Flange",
+      "IK/FK",
+      "Trajectory Tracking"
+    ],
+    "title": "RoboBeam",
+    "year": 2026,
+    "date": "2026-08",
+    "summary": "3D-симулятор на Unity для обучения роботизированной сварке. В проекте реализованы интерактивные уроки, экзамены, панель управления роботом, команды MOVJ/MOVL/MOVC, сварочные режимы, траектории и проверка точности.",
+    "cover": "/src/assets/images/robobeam/robobeam-0.webp",
+    "images": [
+      "/src/assets/images/robobeam/robobeam-1.webp",
+      "/src/assets/images/robobeam/robobeam-2.webp",
+      "/src/assets/images/robobeam/robobeam-3.webp",
+      "/src/assets/images/robobeam/robobeam-4.webp",
+      "/src/assets/images/robobeam/robobeam-5.webp",
+      "/src/assets/images/robobeam/robobeam-6.webp",
+      "/src/assets/images/robobeam/robobeam-7.webp"
+    ],
+    "youtubeId": "k1SluEctjCY",
+    "repo": "",
+    "featured": true
+  },
+  {
     "id": "museumroom-mr",
-    "tags": ["Unity", "Meta XR", "Spatial Anchors", "MR", "URP"],
-    "title": "MuseumRoom",
+    "tags": [
+      "Unity",
+      "Meta XR",
+      "Spatial Anchors",
+      "MR",
+      "URP"
+    ],
+    "title": "Museum Room",
     "year": 2026,
     "date": "2025-12",
-    "summary": "Интерактивное MR-приложение, разработанное на Unity, ориентированное на создание и редактирование виртуального музейного пространства, интегрированного в реальное окружение пользователя. Приложение позволяет сканировать физическое помещение, формировать виртуальную комнату на основе Spatial Anchors, размещать и настраивать картины, постаменты и экспонаты, изменять внешний вид стен, а также централизованно управлять музейным контентом через интерактивные элементы управления.",
+    "summary": "MR-приложение на Unity для создания виртуального музейного пространства в реальном помещении. Пользователь сканирует комнату, размещает картины, постаменты и экспонаты, меняет материалы стен и управляет музейным контентом.",
     "cover": "/src/assets/images/museum/museum-cover.webp",
     "images": [
       "/src/assets/images/museum/museum-1.webp",
@@ -22,32 +56,43 @@
   },
   {
     "id": "virtualcollege-vr",
-    "tags": ["Unity", "Meta XR SDK", "OpenXR", "VR", "URP"],
-    "title": "VirtualCollege",
+    "tags": [
+      "Unity",
+      "Meta XR SDK",
+      "OpenXR",
+      "VR",
+      "URP",
+      "Backend API"
+    ],
+    "title": "Virtual College",
     "year": 2026,
     "date": "2026-06",
-    "summary": "VR-приложение на Unity, созданное как дипломный проект для виртуального знакомства с колледжем и отработки практических навыков в иммерсивной среде. После авторизации пользователь выбирает специальность, проходит обучение под руководством NPC-куратора и выполняет профильные VR-квесты — от сборки и диагностики ПК до поварского и кондитерского дела и материально-технического обеспечения. В проекте реализованы захват и использование объектов, визуальная подсветка активных зон и целей, диалоговая система с отслеживанием состояний квестов и загрузка достижений. Технологическую основу составляют Meta XR SDK, OpenXR и URP, а синхронизация профиля, прогресса и обучения выполняется через внешний backend API; приложение рассчитано на Meta Quest 3.",
+    "summary": "VR-приложение на Unity для знакомства с колледжем и практики профильных заданий. Реализованы NPC-куратор, интерактивные VR-квесты, подсветка целей, диалоги, прогресс и backend API.",
     "cover": "/src/assets/images/college/college-cover.webp",
     "images": [
       "/src/assets/images/college/college-1.webp",
-      "/src/assets/images/college/college-2.webp",
       "/src/assets/images/college/college-3.webp",
       "/src/assets/images/college/college-4.webp",
       "/src/assets/images/college/college-5.webp",
-      "/src/assets/images/college/college-6.webp",
-      "/src/assets/images/college/college-7.webp"
+      "/src/assets/images/college/college-6.webp"
     ],
     "youtubeId": "aH5OWpayVv8",
     "repo": "https://github.com/qwertynoqwerty/VirtualCollegeVR",
-    "featured": true
+    "featured": false
   },
   {
     "id": "car-ar",
-    "tags": ["Unity", "AR Foundation", "LeanTouch", "Cinemachine", "AR"],
+    "tags": [
+      "Unity",
+      "AR Foundation",
+      "LeanTouch",
+      "Cinemachine",
+      "AR"
+    ],
     "title": "Murata AR Vision",
     "year": 2025,
-    "date": "2025-09",
-    "summary": "AR-приложение на Unity для просмотра 3D-модели автомобиля. Реализованы распознавание маркера, жесты вращения и масштабирования и адаптивный AR-просмотр на AR Foundation, LeanTouch и Cinemachine.",
+    "date": "2025-10",
+    "summary": "AR-приложение на Unity для демонстрации 3D-модели автомобиля через маркер. Реализованы распознавание изображения, адаптивный AR-просмотр, жесты поворота и масштаба, AR Foundation, LeanTouch и Cinemachine.",
     "cover": "/src/assets/images/murata/murata-cover.webp",
     "images": [
       "/src/assets/images/murata/murata-1.webp",
@@ -61,31 +106,16 @@
     "featured": false
   },
   {
-    "id": "daggerhit-2d",
-    "tags": ["Unity", "2D", "C#"],
-    "title": "DaggerHit",
-    "year": 2023,
-    "date": "2023-11",
-    "summary": "Небольшой учебный проект на Unity, вдохновлённый Knife Hit. Реализованы метание кинжалов, вращающиеся брёвна, сбор яблок и плавные переходы между уровнями.",
-    "cover": "/src/assets/images/dagger/dagger-cover.webp",
-    "images": [
-      "/src/assets/images/dagger/dagger-1.webp",
-      "/src/assets/images/dagger/dagger-2.webp",
-      "/src/assets/images/dagger/dagger-3.webp",
-      "/src/assets/images/dagger/dagger-4.webp",
-      "/src/assets/images/dagger/dagger-5.webp"
-    ],
-    "youtubeId": "0YUaSUzHkDY",
-    "repo": "https://github.com/qwertyzxcww/DaggerHit2D",
-    "featured": false
-  },
-  {
     "id": "ridervsghost-3d",
-    "tags": ["Unity", "3D", "C#"],
+    "tags": [
+      "Unity",
+      "3D",
+      "C#"
+    ],
     "title": "RiderVsGhost",
     "year": 2025,
     "date": "2025-08",
-    "summary": "Тестовый гоночный проект на Unity с двумя заездами: первый записывает траекторию игрока, а во втором по трассе едет призрак, повторяющий его движение.",
+    "summary": "Гоночный 3D-прототип на Unity с механикой ghost replay. Первый заезд записывает траекторию игрока, а во втором по трассе движется призрак, повторяющий сохраненное движение для сравнения результата.",
     "cover": "/src/assets/images/rider/rider-cover.webp",
     "images": [
       "/src/assets/images/rider/rider-1.webp",
@@ -100,11 +130,15 @@
   },
   {
     "id": "unityrace-2d",
-    "tags": ["Unity", "2D", "C#"],
+    "tags": [
+      "Unity",
+      "2D",
+      "C#"
+    ],
     "title": "UnityRace",
     "year": 2023,
     "date": "2024-02",
-    "summary": "Учебная 2D-аркада на Unity: игрок управляет машиной, уворачивается от встречных авто, набирает очки с активацией финальных панелей по итогам заезда.",
+    "summary": "Учебная 2D-аркада на Unity: игрок управляет машиной, объезжает встречный транспорт, набирает очки и получает итоговый экран после завершения заезда.",
     "cover": "/src/assets/images/race/race-cover.webp",
     "images": [
       "/src/assets/images/race/race-1.webp",
@@ -119,11 +153,15 @@
   },
   {
     "id": "plantsvsundead-3d",
-    "tags": ["Unity", "3D", "Tower Defense"],
+    "tags": [
+      "Unity",
+      "3D",
+      "Tower Defense"
+    ],
     "title": "PlantsVsUndead",
     "year": 2024,
     "date": "2024-02",
-    "summary": "3D-tower-defense на Unity: игрок размещает растения, генерирует солнышки и отбивает волны врагов с жизненной системой и финальными панелями.",
+    "summary": "3D tower defense на Unity: игрок размещает растения, собирает ресурс, отбивает волны противников и удерживает базу с системой здоровья и финальными состояниями уровня.",
     "cover": "/src/assets/images/pvu/pvu-cover.webp",
     "images": [
       "/src/assets/images/pvu/pvu-1.webp",
@@ -138,11 +176,15 @@
   },
   {
     "id": "designroom-3d",
-    "tags": ["Unity", "3D", "C#"],
+    "tags": [
+      "Unity",
+      "3D",
+      "C#"
+    ],
     "title": "DesignRoom",
     "year": 2024,
     "date": "2024-02",
-    "summary": "Учебный 3D-редактор на Unity: пользователь создаёт комнату с заданными параметрами, размещает декор по клеткам пола, поворачивает объекты, перекрашивает стены.",
+    "summary": "Учебный 3D-конструктор комнаты на Unity. Пользователь задает параметры помещения, размещает декор по сетке, поворачивает объекты и меняет оформление стен в интерактивном редакторе.",
     "cover": "/src/assets/images/design/design-cover.webp",
     "images": [
       "/src/assets/images/design/design-1.webp",
@@ -154,6 +196,28 @@
     "youtubeId": "5MQ5Keew2ck",
     "repo": "https://github.com/qwertyzxcww/DesignRoom3D",
     "featured": false
+  },
+  {
+    "id": "daggerhit-2d",
+    "tags": [
+      "Unity",
+      "2D",
+      "C#"
+    ],
+    "title": "DaggerHit",
+    "year": 2023,
+    "date": "2023-11",
+    "summary": "Учебная 2D-аркада на Unity, вдохновленная Knife Hit. Реализованы броски кинжалов, вращающиеся цели, сбор яблок, переходы между уровнями и базовая игровая петля на C#.",
+    "cover": "/src/assets/images/dagger/dagger-cover.webp",
+    "images": [
+      "/src/assets/images/dagger/dagger-1.webp",
+      "/src/assets/images/dagger/dagger-2.webp",
+      "/src/assets/images/dagger/dagger-3.webp",
+      "/src/assets/images/dagger/dagger-4.webp",
+      "/src/assets/images/dagger/dagger-5.webp"
+    ],
+    "youtubeId": "0YUaSUzHkDY",
+    "repo": "https://github.com/qwertyzxcww/DaggerHit2D",
+    "featured": false
   }
 ]
-

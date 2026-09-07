@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import projects from "../data/projects.json";
 import ProjectCard from "./ProjectCard";
@@ -57,6 +57,14 @@ export default function CatalogCarousel() {
         opacity: 1,
         filter: "none",
     };
+
+    const moveTo = useCallback((nextIndex) => {
+        const clampedIndex = Math.max(0, Math.min(maxIndex, nextIndex));
+        setActiveIndex(clampedIndex);
+    }, [maxIndex]);
+
+    const goPrev = () => moveTo(activeIndex - 1);
+    const goNext = () => moveTo(activeIndex + 1);
 
     const updateLayout = () => {
         const viewport = viewportRef.current;
@@ -121,15 +129,7 @@ export default function CatalogCarousel() {
 
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [activeIndex, maxIndex]);
-
-    const moveTo = (nextIndex) => {
-        const clampedIndex = Math.max(0, Math.min(maxIndex, nextIndex));
-        setActiveIndex(clampedIndex);
-    };
-
-    const goPrev = () => moveTo(activeIndex - 1);
-    const goNext = () => moveTo(activeIndex + 1);
+    }, [activeIndex, moveTo]);
 
     const onPointerDown = (event) => {
         if (event.pointerType === "mouse" && event.button !== 0) {
