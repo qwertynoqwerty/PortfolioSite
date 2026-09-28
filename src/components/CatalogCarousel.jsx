@@ -26,7 +26,13 @@ function getVisibleCount(width) {
 }
 
 export default function CatalogCarousel() {
-    const items = useMemo(() => projects.filter((project) => !project.featured), []);
+    const items = useMemo(
+        () =>
+            projects
+                .filter((project) => !project.featured)
+                .sort((first, second) => (second.date ?? "").localeCompare(first.date ?? "")),
+        [],
+    );
     const { openImages, openVideo, openRepo, imageModalProps, videoModalProps } = useProjectMediaModals();
 
     const viewportRef = useRef(null);

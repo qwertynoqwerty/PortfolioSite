@@ -9,7 +9,7 @@
       "IK/FK",
       "Trajectory Tracking"
     ],
-    "title": "RoboBeam",
+    "title": "Robobim",
     "year": 2026,
     "date": "2026-08",
     "summary": "3D-симулятор на Unity для обучения роботизированной сварке. В проекте реализованы интерактивные уроки, экзамены, панель управления роботом, команды MOVJ/MOVL/MOVC, сварочные режимы, траектории и проверка точности.",
@@ -36,7 +36,7 @@
       "MR",
       "URP"
     ],
-    "title": "Museum Room",
+    "title": "MuseumRoom",
     "year": 2026,
     "date": "2025-12",
     "summary": "MR-приложение на Unity для создания виртуального музейного пространства в реальном помещении. Пользователь сканирует комнату, размещает картины, постаменты и экспонаты, меняет материалы стен и управляет музейным контентом.",
@@ -64,7 +64,7 @@
       "URP",
       "Backend API"
     ],
-    "title": "Virtual College",
+    "title": "VirtualCollege",
     "year": 2026,
     "date": "2026-06",
     "summary": "VR-приложение на Unity для знакомства с колледжем и практики профильных заданий. Реализованы NPC-куратор, интерактивные VR-квесты, подсветка целей, диалоги, прогресс и backend API.",
@@ -81,6 +81,29 @@
     "featured": false
   },
   {
+    "id": "space-everyday",
+    "tags": [
+      "Unity",
+      "Educational Games",
+      "Mini-games"
+    ],
+    "title": "SpaceEveryday",
+    "year": 2026,
+    "date": "2026-08",
+    "summary": "Обучающее 2D-приложение на Unity для детей с шестью мини-играми о космосе и окружающем мире. Перед каждой игрой пользователь проходит туториал, а затем выполняет интерактивные задания и закрепляет знания.",
+    "cover": "/src/assets/images/space-everyday/space-everyday-0.webp",
+    "images": [
+      "/src/assets/images/space-everyday/space-everyday-1.webp",
+      "/src/assets/images/space-everyday/space-everyday-2.webp",
+      "/src/assets/images/space-everyday/space-everyday-3.webp",
+      "/src/assets/images/space-everyday/space-everyday-4.webp",
+      "/src/assets/images/space-everyday/space-everyday-5.webp"
+    ],
+    "youtubeId": "LE0YAFi2k_A",
+    "repo": "",
+    "featured": false
+  },
+  {
     "id": "car-ar",
     "tags": [
       "Unity",
@@ -89,7 +112,7 @@
       "Cinemachine",
       "AR"
     ],
-    "title": "Murata AR Vision",
+    "title": "MurataARVision",
     "year": 2025,
     "date": "2025-10",
     "summary": "AR-приложение на Unity для демонстрации 3D-модели автомобиля через маркер. Реализованы распознавание изображения, жесты поворота и масштаба, AR Foundation, LeanTouch и Cinemachine.",
