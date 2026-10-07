@@ -33,8 +33,16 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
                     >
-                        VR / AR Developer
+                        Unity Developer
                     </motion.h1>
+                    <motion.p
+                        className="relative z-10 mt-5 text-xl sm:text-2xl font-medium tracking-wide text-white/70"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+                    >
+                        VR / AR / MR
+                    </motion.p>
                 </div>
             </div>
 

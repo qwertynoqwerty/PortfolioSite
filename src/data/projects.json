@@ -4,10 +4,8 @@
     "tags": [
       "Unity",
       "C#",
-      "URP",
-      "Preliy Flange",
-      "IK/FK",
-      "Trajectory Tracking"
+      "UI",
+      "MOVJ / MOVL / MOVC"
     ],
     "title": "Robobim",
     "year": 2026,
@@ -31,10 +29,11 @@
     "id": "museumroom-mr",
     "tags": [
       "Unity",
-      "Meta XR",
+      "C#",
+      "Meta XR SDK",
+      "Passthrough",
       "Spatial Anchors",
-      "MR",
-      "URP"
+      "MR"
     ],
     "title": "MuseumRoom",
     "year": 2026,
@@ -84,8 +83,9 @@
     "id": "space-everyday",
     "tags": [
       "Unity",
-      "Educational Games",
-      "Mini-games"
+      "C#",
+      "UI",
+      "UI-анимации"
     ],
     "title": "SpaceEveryday",
     "year": 2026,
@@ -107,10 +107,11 @@
     "id": "car-ar",
     "tags": [
       "Unity",
+      "C#",
       "AR Foundation",
-      "LeanTouch",
-      "Cinemachine",
-      "AR"
+      "Lean Touch",
+      "UniWebView",
+      "DOTween"
     ],
     "title": "MurataARVision",
     "year": 2025,

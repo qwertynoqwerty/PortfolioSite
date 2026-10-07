@@ -107,7 +107,7 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
                                 leaveTo="opacity-0 scale-95"
                             >
                                 <Dialog.Panel className="flex max-h-[90dvh] w-[min(92rem,92vw)] flex-col rounded-2xl border border-white/10 bg-[#121214] p-6 md:p-7 shadow-xl">
-                                    <div className="flex shrink-0 items-center justify-between">
+                                    <div className="flex flex-wrap shrink-0 items-center justify-between gap-3">
                                         <Dialog.Title className="text-lg md:text-xl font-semibold">
                                             {title}
                                         </Dialog.Title>
@@ -175,11 +175,11 @@ export default function ShowcaseImageModal({ open, title, images = [], onClose, 
 
                     <div className="fixed inset-0" onClick={closeViewer}>
                         <div
-                            className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-4"
+                            className="absolute top-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-3"
                             onClick={(event) => event.stopPropagation()}
                         >
                             <div className="text-xs md:text-sm text-white/80">
-                                {title} {list.length > 0 ? `— ${viewerIndex + 1}/${list.length}` : ""}
+                                {title} {list.length > 0 ? `- ${viewerIndex + 1}/${list.length}` : ""}
                             </div>
 
                             <div className="flex items-center gap-2">

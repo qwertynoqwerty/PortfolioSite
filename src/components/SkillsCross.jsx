@@ -40,18 +40,18 @@ function Tile({ icon, label, href }) {
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 320, damping: 20 }}
             className="flex flex-col items-center justify-center
-                 w-[clamp(92px,27vw,184px)] h-[clamp(92px,27vw,184px)] rounded-xl
+                 w-[clamp(80px,calc((100vw-80px)/3),184px)] h-[clamp(80px,calc((100vw-80px)/3),184px)] rounded-xl
                  border border-white/12 bg-white/[0.04] hover:bg-white/[0.07] hover:border-white/25
                  text-white/90 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-            <div className="mb-3">{icon}</div>
-            <div className="text-[14px] font-medium text-center leading-tight">{label}</div>
+            <div className="mb-2 sm:mb-3">{icon}</div>
+            <div className="px-1 text-xs sm:text-[14px] font-medium text-center leading-tight">{label}</div>
         </motion.a>
     );
 }
 
 export default function SkillsCross() {
-    const iconSize = "w-12 h-12";
+    const iconSize = "w-10 h-10 sm:w-12 sm:h-12";
 
     const row1 = [
         { label: "Unity", icon: <SiUnity className={iconSize} />, href: "https://unity.com/" },
@@ -60,7 +60,7 @@ export default function SkillsCross() {
     const row2 = [
         { label: "UltimateXR", icon: <IconUltimateXR className={iconSize} />, href: "https://www.ultimatexr.io/" },
         { label: "Git", icon: <SiGit className={iconSize} />, href: "https://git-scm.com/" },
-        { label: "Meta SDK", icon: <IconMetaAllInOne className={iconSize} />, href: "https://developers.meta.com/horizon/downloads/package/meta-xr-sdk-all-in-one-upm/" },
+        { label: "Meta XR SDK", icon: <IconMetaAllInOne className={iconSize} />, href: "https://developers.meta.com/horizon/downloads/package/meta-xr-sdk-all-in-one-upm/" },
     ];
     const row3 = [
         { label: "Blender", icon: <SiBlender className={iconSize} />, href: "https://www.blender.org/" },

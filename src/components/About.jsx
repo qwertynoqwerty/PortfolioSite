@@ -49,19 +49,20 @@ export default function About() {
 
                     <div className="mt-6 md:mt-8 max-w-[640px] text-base md:text-[18px] leading-relaxed text-white/85">
                         <p>
-                            Работаю с VR/AR на Unity: реализую пользовательские взаимодействия, интерфейсы и системную
-                            логику для VR/MR-приложений.
+                            Unity Developer с 1+ годом коммерческого опыта в разработке VR / AR / MR
+                            и интерактивных 3D-приложений. Работаю с Meta Quest, пространственными
+                            взаимодействиями и UI.
                         </p>
 
                         <p className="mt-4 text-white/75">
-                            Пространственная логика сцены, интерактивные элементы и пользовательские состояния, а также
-                            настройка UI и взаимодействий под реальные устройства.
+                            Подключаюсь к существующим Unity-проектам, разбираюсь в их логике,
+                            дорабатываю функциональность, исправляю ошибки и довожу задачи до рабочего состояния.
                         </p>
                     </div>
 
                     <div className="mt-8 grid w-full max-w-[640px] grid-cols-3 gap-3 md:gap-4">
                         <StatCounter value={projects.length} label="Проектов" suffix="+" />
-                        <StatCounter value={1} label="Год в Unity" />
+                        <StatCounter value={1} label="Год коммерческого опыта" suffix="+" />
                         <StatCounter value={3} label="XR-проекта" />
                     </div>
                 </motion.div>

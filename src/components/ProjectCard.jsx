@@ -13,7 +13,7 @@ export default function ProjectCard({
     const cardWidthClass = compact ? "w-full min-w-0" : "w-[58rem] max-w-[86vw]";
     const aspectClass = compact ? "aspect-[16/10]" : "aspect-[16/9]";
     const titleClass = compact ? "text-[1.05rem] md:text-[1.12rem]" : "text-lg md:text-xl";
-    const summaryTextClass = compact ? "text-xs md:text-[13px]" : "text-sm md:text-[15px]";
+    const summaryTextClass = "text-sm md:text-[15px]";
 
     return (
         <div className={`${cardWidthClass} group flex h-full flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.03] p-1 shadow-[0_18px_48px_rgba(0,0,0,0.18)] transition-colors duration-300 hover:border-white/25`}>
@@ -34,9 +34,9 @@ export default function ProjectCard({
             </div>
 
             <div className="px-4 sm:px-5 pt-4 pb-5 min-w-0 flex flex-1 flex-col">
-                <div className="flex items-baseline justify-between gap-6">
-                    <h3 className={`font-semibold ${titleClass}`}>{project.title}</h3>
-                    <span className="font-mono text-[11px] text-white/55">{formatMonthYear(project.date, project.year)}</span>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 className={`min-w-0 break-words font-semibold ${titleClass}`}>{project.title}</h3>
+                    <span className="font-mono text-[11px] text-white/55 shrink-0">{formatMonthYear(project.date, project.year)}</span>
                 </div>
 
                 <TechTags tags={project.tags} className="mt-3" limit={3} />

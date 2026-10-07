@@ -183,7 +183,7 @@ export default function CatalogCarousel() {
                 <SectionTitle title="Каталог" eyebrow="все работы" />
             </motion.div>
 
-            <div className="grid grid-cols-[48px_minmax(0,1fr)_48px] md:grid-cols-[56px_minmax(0,1fr)_56px] items-center gap-3 md:gap-4 overflow-visible">
+            <div className="grid grid-cols-2 md:grid-cols-[56px_minmax(0,1fr)_56px] items-center gap-3 md:gap-4 overflow-visible">
                 <motion.button
                     type="button"
                     aria-label="Назад"
@@ -195,13 +195,14 @@ export default function CatalogCarousel() {
                     initial={pop(0).initial}
                     whileInView={pop(0).inView}
                     viewport={{ once: true, amount: 0.25 }}
-                    className={navButtonClass}
+                    className={`${navButtonClass} row-start-2 md:row-start-1`}
                     style={isPrevDisabled ? disabledButtonStyle : activeButtonStyle}
                 >
                     ‹
                 </motion.button>
 
                 <motion.div
+                    className="col-span-2 row-start-1 min-w-0 md:col-span-1 md:col-start-2"
                     initial={pop(0.12).initial}
                     whileInView={pop(0.12).inView}
                     viewport={{ once: true, amount: 0.2 }}
@@ -252,7 +253,7 @@ export default function CatalogCarousel() {
                     initial={pop(0.24).initial}
                     whileInView={pop(0.24).inView}
                     viewport={{ once: true, amount: 0.25 }}
-                    className={navButtonClass}
+                    className={`${navButtonClass} row-start-2 md:row-start-1 md:col-start-3`}
                     style={isNextDisabled ? disabledButtonStyle : activeButtonStyle}
                 >
                     ›
